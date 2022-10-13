@@ -1,34 +1,52 @@
-from ControleurMenu import ControleurMenu
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
 
 if __name__ == "__main__":
-    
-    menu = ControleurMenu()
 
     # créer une fenetre tk avec un titre, un background et des dimensions
     root = tk.Tk()
-    root.title("Carré Rouge - Menu")
-    root.config(background="light blue")
-    root.geometry("350x350")
+    root.title("Carré Rouge")
+    root.config(background="white")
+    root.geometry("500x600")
 
     # créer un containter et le centrer dans la fenetre tk
-    container = tk.Frame(root, background="light blue")
-    container.pack(pady=20) # pour centrer et donner un padding
+    mainContainer = tk.Frame(root, background="light blue")
+    mainContainer.pack(pady=20) # pour centrer et donner un padding
 
-    # créer un label menu et le mettre dans un grid en lui donnant du padding
-    texte = tk.Label(container, text="Menu", background="light blue")
-    texte.configure(font=("Bahnschrift", 25, "italic"))
-    texte.grid(column=1, row=0, padx=10)
+    # créer un titre de jeu et le mettre dans un grid en lui donnant du padding
+    titre = tk.Label(mainContainer, text="Carré Rouge", background="light blue")
+    titre.configure(font=("Bahnschrift", 25, "italic"))
+    titre.grid(column=1, row=0, padx=10)
 
-    # créer un button commencer un nouveau jeu et le mettre dans un grid en lui donnant du padding
-    buttonNouveauJeu = tk.Button(container, text="Commencer Un Nouveau Jeu", background="pink", command=partial(menu.commencerJeu, container))
-    buttonNouveauJeu.grid(column=1, row=1, padx=10, pady=15)
+    # créer l'aire de jeu et le mettre dans un grid en lui donnant du padding
+    aireDeJeu = tk.Canvas(mainContainer, height=400, width=400, background="grey90")
+    aireDeJeu.grid(column=1, row=1, padx=20, pady=10) # pour centrer et donner un padding
 
-    # créer un button relancer une session ancienne et le mettre dans un grid en lui donnant du padding
-    buttonRelancerSession = tk.Button(container, text="Relancer Une Session", background="pink", command=menu.relancerSession(container))
-    buttonRelancerSession.grid(column=1, row=2, padx=10,)
+
+    # définir l'objet controleur
+    jeu = ControleurJeu()
+
+    # À coder (Aurélien)
+    # 
+    # ..
+
+
+    # créer un container des buttonset le mettre dans un grid en lui donnant du padding
+    buttonsContainer = tk.Canvas(mainContainer, background="grey90")
+    buttonsContainer.grid(column=1, row=2, padx=10, pady=15) # pour centrer et donner un padding
+
+    # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
+    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background="pink")
+    buttonNouvSession.grid(column=1, row=1, padx=15)
+
+    # créer un button qui affiche le menu score un nouveau jeu et le mettre dans un grid en lui donnant du padding
+    buttonMenuScores = tk.Button(buttonsContainer, text="Menu Score", background="pink")
+    buttonMenuScores.grid(column=2, row=1, padx=15, pady=15)
+
+    # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
+    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink")
+    buttonQuitter.grid(column=3, row=1, padx=15)
 
     # boocler la fenetre tk
     root.mainloop()

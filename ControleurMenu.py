@@ -1,15 +1,15 @@
-from VueMenu import VueMenu
-from ControleurJeu import ControleurJeu
+# from VueMenu import VueMenu
+# from ControleurJeu import ControleurJeu
 
-class ControleurMenu:
+# class ControleurMenu:
 
-    def __init__(self):
-        self.vueMenu = VueMenu()
-        self.jeu = ControleurJeu()
+#     def __init__(self):
+#         self.vueMenu = VueMenu()
+#         self.jeu = ControleurJeu()
 
-    # cette methode appel la methode qui commence le jeu
-    def commencerJeu(self, container):
-        self.jeu.start(container)
+#     # cette methode appel la methode qui commence le jeu
+#     def commencerJeu(self, container):
+#         self.jeu.start(container)
 
-    def relancerSession(self, container):
-        pass
+#     def relancerSession(self, container):
+#         pass
