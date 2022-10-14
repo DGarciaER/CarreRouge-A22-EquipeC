@@ -13,7 +13,7 @@ if __name__ == "__main__":
     root.config(background="light blue")
     root.geometry("350x350")
 
-    # créer un containter et le centrer dans la fenetre tk
+    # créer un container et le centrer dans la fenetre tk
     container = tk.Frame(root, background="light blue")
     container.pack(pady=20) # pour centrer et donner un padding
 

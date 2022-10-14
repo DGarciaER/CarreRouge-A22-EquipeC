@@ -1,3 +1,6 @@
+from tkinter import Canvas
+
+
 class VueJeu:
     
     # cette methose suprime la fenetre tout ce qui est dans la fenetre
@@ -5,3 +8,7 @@ class VueJeu:
         container = container.grid_slaves()
         for widget in container:
             widget.destroy()
+
+    
+
+    
