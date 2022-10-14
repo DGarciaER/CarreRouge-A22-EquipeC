@@ -1,6 +1,8 @@
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
+import c31Geometry2 as c31
+
 
 if __name__ == "__main__":
 
@@ -13,7 +15,7 @@ if __name__ == "__main__":
     # créer un containter et le centrer dans la fenetre tk
     mainContainer = tk.Frame(root, background="light blue")
     mainContainer.pack(pady=20) # pour centrer et donner un padding
-
+    
     # créer un titre de jeu et le mettre dans un grid en lui donnant du padding
     titre = tk.Label(mainContainer, text="Carré Rouge", background="light blue")
     titre.configure(font=("Bahnschrift", 25, "italic"))
@@ -30,7 +32,7 @@ if __name__ == "__main__":
     # À coder (Aurélien)
     # 
     # ..
-
+    
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
