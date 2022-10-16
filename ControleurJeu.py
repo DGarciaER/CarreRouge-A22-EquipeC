@@ -4,9 +4,14 @@ import tkinter as tk
 
 class ControleurJeu:
     
-    def __init__(self):
+    def __init__(self, container):
         self.vueJeu = VueJeu()
-        self.modeleJeu = ModeleJeu()
+        self.modeleJeu = ModeleJeu(container)
+        self.modeleJeu.afficher_carreRouge()
+        self.modeleJeu.afficher_rectangleBleu1()
+        self.modeleJeu.afficher_rectangleBleu2()
+        self.modeleJeu.afficher_rectangleBleu3()
+        self.modeleJeu.afficher_rectangleBleu4()
 
     # cette methode commence le jeu
     def start(self, container):
