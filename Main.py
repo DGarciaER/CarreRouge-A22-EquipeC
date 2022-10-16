@@ -10,7 +10,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Carré Rouge")
     root.config(background="white")
-    root.geometry("500x600")
+    root.geometry("550x650")
 
     # créer un containter et le centrer dans la fenetre tk
     mainContainer = tk.Frame(root, background="light blue")
@@ -22,12 +22,14 @@ if __name__ == "__main__":
     titre.grid(column=1, row=0, padx=10)
 
     # créer l'aire de jeu et le mettre dans un grid en lui donnant du padding
-    aireDeJeu = tk.Canvas(mainContainer, height=400, width=400, background="grey90")
+    aireDeJeu = tk.Canvas(mainContainer, height=450, width=450, background="grey90")
     aireDeJeu.grid(column=1, row=1, padx=20, pady=10) # pour centrer et donner un padding
 
 
     # définir l'objet controleur
-    jeu = ControleurJeu()
+    jeu = ControleurJeu(aireDeJeu)
+
+    
 
     # À coder (Aurélien)
     # 
@@ -39,7 +41,7 @@ if __name__ == "__main__":
     buttonsContainer.grid(column=1, row=2, padx=10, pady=15) # pour centrer et donner un padding
 
     # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
-    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background="pink",command=partial(jeu.start,mainContainer))
+    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background="pink")
     buttonNouvSession.grid(column=1, row=1, padx=15)
 
     # créer un button qui affiche le menu score un nouveau jeu et le mettre dans un grid en lui donnant du padding

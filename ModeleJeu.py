@@ -1,17 +1,21 @@
 from tkinter import Canvas
 class ModeleJeu:
-    #methode pour creer lair de jeu
-    def creation_airJeu (container):
-        airJeu = Canvas(container,bg="#808080", width= 450, height=450)
-        airJeu.place(x=10,y=0)
+
+    tailleCarreRouge = 40
+
+    def __init__(self, container):
+        self.carreRouge = Canvas(container, bg="#ff0000", width=self.tailleCarreRouge, height=self.tailleCarreRouge)
+        self.rectangleBleu = Canvas(container, bg="#0000ff", width=30, height=30)
+        self.rectangleBleu = Canvas(container, bg="#0000ff", width=30, height=30)
+        self.rectangleBleu = Canvas(container, bg="#0000ff", width=20, height=50)
+        self.rectangleBleu = Canvas(container, bg="#0000ff", width=150, height=20)
 
     #methode pour creer le rcare rouge
     #TODO faut-il deplacer cette methode dans une classe specifique au carreRouge? pareil pour les autres methodes d'initialisation..?
-    def creation_carreRouge(container):
-        carreRouge = Canvas(container, bg="#ff0000", width=20, height=20)
-        carreRouge.place(x=100,y=60)
+    def afficher_carreRouge(self):
+        self.carreRouge.place(x=225-self.tailleCarreRouge/2,y=225-self.tailleCarreRouge/2)
         # cette fonctionnalité permet de déplacer carreRouge lorsque le boutton gauche de la souris est appuyé
-        carreRouge.bind("<B1-Motion>, move")
+        self.carreRouge.bind("<B1-Motion>, move")
 
         # cette methode permet au carreRouge de se deplacer vers la gauche a l'écran
         #TODO ajuster la valeur de deplacement (réduire pour que l'on voit plus précisement ou se trouve le carre)
@@ -44,21 +48,17 @@ class ModeleJeu:
             img = airJeu.create_image(e.x, e.y, image=image)
 
     #methode pour creer rectangle bleu1
-    def creation_rectangleBleu1(container):
-        rectangleBleu = Canvas(container, bg="#0000ff", width=30, height=30)
-        rectangleBleu.place(x=5, y=2)
+    def afficher_rectangleBleu1(self):
+        self.rectangleBleu.place(x=5, y=2)
 
     #methode pour creer rectangle bleu2
-    def creation_rectangleBleu2(container):
-        rectangleBleu = Canvas(container, bg="#0000ff", width=30, height=30)
-        rectangleBleu.place(x=150, y=2)
+    def afficher_rectangleBleu2(self):
+        self.rectangleBleu.place(x=150, y=2)
 
     #methode pour creer rectangle bleu3
-    def creation_rectangleBleu3(container):
-        rectangleBleu = Canvas(container, bg="#0000ff", width=20, height=50)
-        rectangleBleu.place(x=20, y=120)
+    def afficher_rectangleBleu3(self):
+        self.rectangleBleu.place(x=20, y=120)
 
     #methode pour creer rectangle bleu4
-    def creation_rectangleBleu4(container):
-        rectangleBleu = Canvas(container, bg="#0000ff", width=150, height=20)
-        rectangleBleu.place(x=100, y=100)
+    def afficher_rectangleBleu4(self):
+        self.rectangleBleu.place(x=100, y=100)
