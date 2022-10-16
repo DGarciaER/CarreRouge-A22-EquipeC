@@ -1,56 +1,69 @@
 from tkinter import Canvas
+import c31Geometry2 as c31
+
+
 class ModeleJeu:
 
     tailleCarreRouge = 40
 
     def __init__(self, container):
-        self.carreRouge = Canvas(container, bg="#ff0000", width=self.tailleCarreRouge, height=self.tailleCarreRouge,highlightthickness=0)
-        self.rectangleBleuGauche = Canvas(container, bg="#0000ff", width=60, height=60,highlightthickness=0)
-        self.rectangleBleuSupDroit = Canvas(container, bg="#0000ff", width=60, height=50,highlightthickness=0)
-        self.rectangleBleuInfGauche = Canvas(container, bg="#0000ff", width=85, height=350,highlightthickness=0)
-        self.rectangleBleuInfDroit = Canvas(container, bg="#0000ff", width=355, height=340,highlightthickness=0)
-        self.leftBorder = Canvas(container,width=50, height=450,bg="black",highlightthickness=0)
-        self.rightBorder = Canvas(container,width=50, height=450,bg="black",highlightthickness=0)
-        self.topBorder = Canvas(container,width=450, height=50,bg="black",highlightthickness=0)
-        self.bottomBorder = Canvas(container,width=450, height=50,bg="black",highlightthickness=0)
+        
+        self.carreRouge = c31.Carre(container, c31.Vecteur(225,225),self.tailleCarreRouge,0, '#ff0000', '#ff0000', 0)
+        
+        self.rectangleBleuGauche = c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0)
+        
+        self.rectangleBleuSupDroit = c31.Rectangle(container, c31.Vecteur(300, 85), 60, 50, 0, '#0000ff', '#0000ff', 0)
+        
+        self.rectangleBleuInfGauche = c31.Rectangle(container, c31.Vecteur(85, 350), 30, 60, 0, '#0000ff', '#0000ff', 0)
+        
+        self.rectangleBleuInfDroit = c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)
+        
+        self.leftBorder = c31.Rectangle(container, c31.Vecteur(25, 550/2), 50, 550, 0,'black','black',0)
+
+        self.rightBorder = c31.Rectangle(container, c31.Vecteur(425, 550/2), 50, 550, 0,'black','black',0)          #FIXME valeur vecteur x doit etre 525..? ne fonctionne pas
+ 
+        self.topBorder = c31.Rectangle(container, c31.Vecteur(550/2, 25), 550, 50, 0,'black','black',0)     
+
+        self.bottomBorder = c31.Rectangle(container, c31.Vecteur(550/2, 425), 550, 50, 0,'black','black',0)
+        #FIXME valeur vecteur y doit etre 525..? ne fonctionne pas
 
     #methode pour creer le rcare rouge
     def afficher_carreRouge(self):
-        self.carreRouge.place(x=225 - self.tailleCarreRouge / 2, y= 225 - self.tailleCarreRouge / 2)
+        self.carreRouge.draw()
         # cette fonctionnalité permet de déplacer carreRouge lorsque le boutton gauche de la souris est appuyé
-        self.carreRouge.bind("<B1-Motion>", move)
+        # self.carreRouge.bind("<B1-Motion>", move)
 
     #methode pour creer rectangle bleuGauche
     def afficher_rectangleBleuGauche(self):
-        self.rectangleBleuGauche.place(x=100, y=100)
+        self.rectangleBleuGauche.draw()
 
     #methode pour creer rectangle bleuSupDroit
     def afficher_rectangleBleuSupDroit(self):
-        self.rectangleBleuSupDroit.place(x=300, y=85)
+        self.rectangleBleuSupDroit.draw()
 
     #methode pour creer rectangle bleuInfGauche
     def afficher_rectangleBleuInfGauche(self):
-        self.rectangleBleuInfGauche.place(x=85, y=350)
+        self.rectangleBleuInfGauche.draw()
 
     #methode pour creer rectangle bleuInfDroit
     def afficher_rectangleBleuInfDroit(self):
-        self.rectangleBleuInfDroit.place(x=355, y=340)
+        self.rectangleBleuInfDroit.draw()
 
     #methode pour afficher leftBorder
     def afficher_leftBorder(self):
-        self.leftBorder.place(x=0,y=0)
+        self.leftBorder.draw()
 
     #methode pour afficher rightBorder
     def afficher_rightBorder(self):
-        self.rightBorder.place(x=400,y=0)
+        self.rightBorder.draw()
 
     #methode pour afficher topBorder
     def afficher_topBorder(self):
-        self.topBorder.place(x=0,y=0)
+        self.topBorder.draw()
 
     #methode pour afficher bottomBorder
     def afficher_bottomBorder(self):
-        self.bottomBorder.place(x=0, y=400)
+        self.bottomBorder.draw()
 
 
     

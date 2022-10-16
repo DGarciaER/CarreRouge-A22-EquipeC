@@ -1,7 +1,7 @@
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
-import c31Geometry2 as c31
+# import c31Geometry2 as c31
 
 
 if __name__ == "__main__":
