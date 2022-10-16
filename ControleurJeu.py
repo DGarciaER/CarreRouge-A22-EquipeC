@@ -8,22 +8,18 @@ class ControleurJeu:
         self.vueJeu = VueJeu()
         self.modeleJeu = ModeleJeu(container)
         self.modeleJeu.afficher_carreRouge()
-        self.modeleJeu.afficher_rectangleBleu1()
-        self.modeleJeu.afficher_rectangleBleu2()
-        self.modeleJeu.afficher_rectangleBleu3()
-        self.modeleJeu.afficher_rectangleBleu4()
+        self.modeleJeu.afficher_rectangleBleuSupDroit()
+        self.modeleJeu.afficher_rectangleBleuGauche()
+        self.modeleJeu.afficher_rectangleBleuInfDroit()
+        self.modeleJeu.afficher_rectangleBleuInfGauche()
+        self.modeleJeu.afficher_leftBorder()
+        self.modeleJeu.afficher_rightBorder()
+        self.modeleJeu.afficher_topBorder()
+        self.modeleJeu.afficher_bottomBorder()
+
 
     # cette methode commence le jeu
-    def start(self, container):
-        #affichage air de jeu
-        ModeleJeu.creation_airJeu(container)
-        #affichage carre rouge
-        ModeleJeu.creation_carreRouge(container)
-        #affichage rectangle
-        ModeleJeu.creation_rectangleBleu1(container)
-        ModeleJeu.creation_rectangleBleu2(container)
-        ModeleJeu.creation_rectangleBleu3(container)
-        ModeleJeu.creation_rectangleBleu4(container)
+    def start(self, container):    
         self.vueJeu.clear(container)
 
     
