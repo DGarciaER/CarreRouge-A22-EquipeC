@@ -25,16 +25,8 @@ if __name__ == "__main__":
     aireDeJeu = tk.Canvas(mainContainer, height=450, width=450, background="grey90")
     aireDeJeu.grid(column=1, row=1, padx=20, pady=10) # pour centrer et donner un padding
 
-
     # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
-
-    
-
-    # À coder (Aurélien)
-    # 
-    # ..
-    
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
@@ -51,8 +43,6 @@ if __name__ == "__main__":
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
     buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink")
     buttonQuitter.grid(column=3, row=1, padx=15)
-
-    
 
     # boocler la fenetre tk
     root.mainloop()

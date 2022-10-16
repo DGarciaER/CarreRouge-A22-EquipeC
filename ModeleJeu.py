@@ -13,7 +13,7 @@ class ModeleJeu:
     #methode pour creer le carre rouge
     #TODO faut-il deplacer cette methode dans une classe specifique au carreRouge? pareil pour les autres methodes d'initialisation..?
     def afficher_carreRouge(self):
-        self.carreRouge.place(x=225-self.tailleCarreRouge/2,y=225-self.tailleCarreRouge/2)
+        self.carreRouge.place(x=225 - self.tailleCarreRouge / 2, y= 225 - self.tailleCarreRouge / 2)
         # cette fonctionnalité permet de déplacer carreRouge lorsque le boutton gauche de la souris est appuyé
         self.carreRouge.bind("<B1-Motion>, move")
 
