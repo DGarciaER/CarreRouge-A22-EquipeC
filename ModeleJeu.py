@@ -18,7 +18,7 @@ class ModeleJeu:
     def afficher_carreRouge(self):
         self.carreRouge.place(x=225 - self.tailleCarreRouge / 2, y= 225 - self.tailleCarreRouge / 2)
         # cette fonctionnalité permet de déplacer carreRouge lorsque le boutton gauche de la souris est appuyé
-        self.carreRouge.bind("<B1-Motion>", move)
+        # self.carreRouge.bind("<B1-Motion>", move)
 
     #methode pour creer rectangle bleuGauche
     def afficher_rectangleBleuGauche(self):
