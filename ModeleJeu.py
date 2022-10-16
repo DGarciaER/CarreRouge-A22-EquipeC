@@ -5,7 +5,7 @@ class ModeleJeu:
         airJeu = Canvas(container,bg="#808080", width= 450, height=450)
         airJeu.place(x=10,y=0)
 
-    #methode pour creer le carre rouge
+    #methode pour creer le rcare rouge
     #TODO faut-il deplacer cette methode dans une classe specifique au carreRouge? pareil pour les autres methodes d'initialisation..?
     def creation_carreRouge(container):
         carreRouge = Canvas(container, bg="#ff0000", width=20, height=20)
