@@ -5,6 +5,7 @@ import c31Geometry2 as c31
 class ModeleJeu:
 
     tailleCarreRouge = 40
+    coteAirDeJeu = 450
 
     def __init__(self, container):
         
@@ -18,14 +19,13 @@ class ModeleJeu:
         
         self.rectangleBleuInfDroit = c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)
         
-        self.leftBorder = c31.Rectangle(container, c31.Vecteur(25, 550/2), 50, 550, 0,'black','black',0)
+        self.leftBorder = c31.Rectangle(container, c31.Vecteur(25, self.coteAirDeJeu/2), 50, 450, 0,'black','black',0)
 
-        self.rightBorder = c31.Rectangle(container, c31.Vecteur(425, 550/2), 50, 550, 0,'black','black',0)          #FIXME valeur vecteur x doit etre 525..? ne fonctionne pas
+        self.rightBorder = c31.Rectangle(container, c31.Vecteur(425, self.coteAirDeJeu/2), 50, 450, 0,'black','black',0)          
  
-        self.topBorder = c31.Rectangle(container, c31.Vecteur(550/2, 25), 550, 50, 0,'black','black',0)     
+        self.topBorder = c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 25), 450, 50, 0,'black','black',0)     
 
-        self.bottomBorder = c31.Rectangle(container, c31.Vecteur(550/2, 425), 550, 50, 0,'black','black',0)
-        #FIXME valeur vecteur y doit etre 525..? ne fonctionne pas
+        self.bottomBorder = c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 425), 450, 50, 0,'black','black',0)
 
     #methode pour creer le rcare rouge
     def afficher_carreRouge(self):
