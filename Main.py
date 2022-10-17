@@ -43,6 +43,6 @@ if __name__ == "__main__":
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
     buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink")
     buttonQuitter.grid(column=3, row=1, padx=15)
-
+    
     # boocler la fenetre tk
     root.mainloop()
