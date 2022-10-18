@@ -2,6 +2,7 @@ from cgi import test
 from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 import tkinter as tk
+import time
 
 import c31Geometry2 as c31
 
@@ -27,21 +28,28 @@ class ControleurJeu:
         
     def move(self, container, coordonneX, coordonneY):
 
-        # self.modeleJeu.carreRouge = c31.Carre(container, c31.Vecteur(coordonneX,coordonneY),40,0, '#ff0000', '#ff0000', 0)
-        self.modeleJeu.carreRouge.set_position(c31.Vecteur(coordonneX,coordonneY))
-        
-        print(str(self.modeleJeu.carreRouge.get_position().x) + " " + str(self.modeleJeu.carreRouge.get_position().y))
-        
-        
-        # self.modeleJeu.carreRouge.set_remplissage("black")
-        # self.modeleJeu.carreRouge.translate(self.modeleJeu.carreRouge.get_position())
-        # self.modeleJeu.carreRouge.translateTo(c31.Vecteur(coordonneX,coordonneY))
-        
-        
-        self.modeleJeu.carreRouge.translate(self.modeleJeu.carreRouge.get_position())
-        self.modeleJeu.afficher_carreRouge()
-    
-                
+
+        # if coordonneX != self.modeleJeu.carreRouge.get_position().x and coordonneY != self.modeleJeu.carreRouge.get_position().y:
+            # self.modeleJeu.carreRouge.set_remplissage("grey90")
+            # self.modeleJeu.carreRouge.set_bordure("grey90")
+            # self.modeleJeu.afficher_carreRouge()
+            # self.modeleJeu.carreRouge = c31.Carre(container, c31.Vecteur(coordonneX,coordonneY),40,0, '#ff0000', '#ff0000', 0)
+            # self.modeleJeu.carreRouge.set_position(c31.Vecteur(coordonneX,coordonneY))
+            
+            # print(str(self.modeleJeu.carreRouge.get_position().x) + " " + str(self.modeleJeu.carreRouge.get_position().y))
+            
+            
+            # self.modeleJeu.carreRouge.set_remplissage("black")
+            # self.modeleJeu.carreRouge.translate(self.modeleJeu.carreRouge.get_position())
+            # self.modeleJeu.carreRouge.translateTo(c31.Vecteur(coordonneX,coordonneY))
+            
+            
+            # self.modeleJeu.carreRouge.translate(self.modeleJeu.carreRouge.get_position())
+            # self.modeleJeu.afficher_carreRouge()
+            # time.sleep(0.2)
+
+        self.modeleJeu.carreRouge.translateTo(c31.Vecteur(coordonneX,coordonneY))
+        self.modeleJeu.afficher_carreRouge()                 
     
 class Mouvement:
     pass

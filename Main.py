@@ -1,5 +1,6 @@
 from ControleurJeu import ControleurJeu, Mouvement
 from functools import partial
+import time
 import tkinter as tk
 # import c31Geometry2 as c31
 
@@ -30,14 +31,14 @@ if __name__ == "__main__":
         cursorY = e.y
         
         if cursorX > 205 and cursorX < 245:
-            if cursorY > 205 and cursorY < 245:
+            if cursorY > 205 and cursorY < 245:  
                     aireDeJeu.bind('<Motion>', test2)
                     
 
     # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
     
-    def test2(e):
+    def test2(e): 
         cursorX = e.x
         cursorY = e.y
         
