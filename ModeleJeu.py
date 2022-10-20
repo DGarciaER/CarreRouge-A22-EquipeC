@@ -13,10 +13,12 @@ class ModeleJeu:
         # initialisation du Carre carreRouge
         self.carreRouge = c31.Carre(container, c31.Vecteur(225,225),self.tailleCarreRouge,0, '#ff0000', '#ff0000', 0)
         
-        self.listeRectangles = [c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0),
-                           c31.Rectangle(container, c31.Vecteur(300, 85), 60, 50, 0, '#0000ff', '#0000ff', 0),
-                           c31.Rectangle(container, c31.Vecteur(85, 350), 30, 60, 0, '#0000ff', '#0000ff', 0),
-                           c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)]
+        self.listT = [[60, 60], [60, 50], [30, 60], [100, 20]]
+        
+        self.listeRectangles = [c31.Rectangle(container, c31.Vecteur(100, 100), self.listT[0][0], self.listT[0][1], 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(300, 85), self.listT[1][0], self.listT[1][1], 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(85, 350), self.listT[2][0], self.listT[2][1], 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(355, 340), self.listT[3][0], self.listT[3][1], 0, '#0000ff', '#0000ff', 0)]
         
         # # initialisation du Rectangle rectangleBleuGauche
         # self.rectangleBleuGauche = c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0)
