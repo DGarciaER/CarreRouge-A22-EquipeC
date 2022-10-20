@@ -4,17 +4,7 @@ from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
 from datetime import datetime
-    
-    
-   
-    # test = input("appuye sur q");
-    # if(test == 'q'):
-       
-       
-    # print(tpsDebutPartie);
-    # print(tpsFinPartie);
-    
-    
+        
 
 import c31Geometry2 as c31
 
