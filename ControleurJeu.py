@@ -1,6 +1,7 @@
 from cgi import test
 from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
+from functools import partial
 import tkinter as tk
 import time
 
@@ -20,13 +21,25 @@ class ControleurJeu:
         self.modeleJeu.afficher_rightBorder()
         self.modeleJeu.afficher_topBorder()
         self.modeleJeu.afficher_bottomBorder()
-        self.mousePressed = False
+        self.enMvt = False
+        self.it = 0
+        
+        self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
+        self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
 
     # cette methode commence le jeu
+    
+    def click(self, e):
+        if  e.x > self.modeleJeu.carreRouge.get_position().x - 40/2:
+            if e.x < self.modeleJeu.carreRouge.get_position().x + 40/2:
+                if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
+                    if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
+                        self.enMvt = True
+    
     def start(self, container):    
         self.vueJeu.clear(container)
         
-    def move(self, container, coordonneX, coordonneY):
+    def move(self, e):
 
 
         # if coordonneX != self.modeleJeu.carreRouge.get_position().x and coordonneY != self.modeleJeu.carreRouge.get_position().y:
@@ -47,9 +60,22 @@ class ControleurJeu:
             # self.modeleJeu.carreRouge.translate(self.modeleJeu.carreRouge.get_position())
             # self.modeleJeu.afficher_carreRouge()
             # time.sleep(0.2)
+            
+            if self.enMvt == True:
+                if self.it % 3 == 0:
+                    for i in range(4):
+                        if  e.x > self.modeleJeu.carreRouge.get_position().x - 40/2:
+                            if e.x < self.modeleJeu.carreRouge.get_position().x + 40/2:
+                                if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
+                                    if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
+                                        pass
+                        
+                        
+                    self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
+                    self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
+                    self.modeleJeu.afficher_carreRouge()  
+            self.it += 1   
 
-        self.modeleJeu.carreRouge.translateTo(c31.Vecteur(coordonneX,coordonneY))
-        self.modeleJeu.afficher_carreRouge()                 
     
 class Mouvement:
     pass

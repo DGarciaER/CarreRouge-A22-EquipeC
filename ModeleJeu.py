@@ -13,17 +13,22 @@ class ModeleJeu:
         # initialisation du Carre carreRouge
         self.carreRouge = c31.Carre(container, c31.Vecteur(225,225),self.tailleCarreRouge,0, '#ff0000', '#ff0000', 0)
         
-        # initialisation du Rectangle rectangleBleuGauche
-        self.rectangleBleuGauche = c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0)
+        self.listeRectangles = [c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(300, 85), 60, 50, 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(85, 350), 30, 60, 0, '#0000ff', '#0000ff', 0),
+                           c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)]
         
-        # initialisation du Rectangle rectangleBleuSupDroit
-        self.rectangleBleuSupDroit = c31.Rectangle(container, c31.Vecteur(300, 85), 60, 50, 0, '#0000ff', '#0000ff', 0)
+        # # initialisation du Rectangle rectangleBleuGauche
+        # self.rectangleBleuGauche = c31.Rectangle(container, c31.Vecteur(100, 100), 60, 60, 0, '#0000ff', '#0000ff', 0)
         
-        # initialisation du Rectangle rectangleBleuInfGauche
-        self.rectangleBleuInfGauche = c31.Rectangle(container, c31.Vecteur(85, 350), 30, 60, 0, '#0000ff', '#0000ff', 0)
+        # # initialisation du Rectangle rectangleBleuSupDroit
+        # self.rectangleBleuSupDroit = c31.Rectangle(container, c31.Vecteur(300, 85), 60, 50, 0, '#0000ff', '#0000ff', 0)
         
-        # initialisation du Rectangle rectangleBleuInfDroit
-        self.rectangleBleuInfDroit = c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)
+        # # initialisation du Rectangle rectangleBleuInfGauche
+        # self.rectangleBleuInfGauche = c31.Rectangle(container, c31.Vecteur(85, 350), 30, 60, 0, '#0000ff', '#0000ff', 0)
+        
+        # # initialisation du Rectangle rectangleBleuInfDroit
+        # self.rectangleBleuInfDroit = c31.Rectangle(container, c31.Vecteur(355, 340), 100, 20, 0, '#0000ff', '#0000ff', 0)
         
         # initialisation du Rectangle leftBorder
         self.leftBorder = c31.Rectangle(container, c31.Vecteur(25, self.coteAirDeJeu/2), 50, 450, 0,'black','black',0)
@@ -45,19 +50,19 @@ class ModeleJeu:
 
     """Cette méthode affiche le rectangle bleuGauche."""
     def afficher_rectangleBleuGauche(self):
-        self.rectangleBleuGauche.draw()
+        self.listeRectangles[0].draw()
 
     """Cette méthode affiche le rectangle bleuSupDroit."""
     def afficher_rectangleBleuSupDroit(self):
-        self.rectangleBleuSupDroit.draw()
+        self.listeRectangles[1].draw()
 
     """Cette méthode affiche le rectangle bleuInfGauche."""
     def afficher_rectangleBleuInfGauche(self):
-        self.rectangleBleuInfGauche.draw()
+        self.listeRectangles[2].draw()
 
     """Cette méthode affiche le rectangle bleuInfDroit."""
     def afficher_rectangleBleuInfDroit(self):
-        self.rectangleBleuInfDroit.draw()
+        self.listeRectangles[3].draw()
 
     """Cette méthode affiche le rectangle leftBorder."""
     def afficher_leftBorder(self):
