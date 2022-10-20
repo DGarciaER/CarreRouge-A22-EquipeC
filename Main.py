@@ -25,28 +25,8 @@ if __name__ == "__main__":
     aireDeJeu = tk.Canvas(mainContainer, height=450, width=450, background="grey90")
     aireDeJeu.grid(column=1, row=1, padx=20, pady=10) # pour centrer et donner un padding
     
-    def test(e):
-        
-        cursorX = e.x
-        cursorY = e.y
-        
-        if cursorX > 205 and cursorX < 245:
-            if cursorY > 205 and cursorY < 245:  
-                    aireDeJeu.bind('<Motion>', test2)
-                    
-
-    # définir l'objet controleur
+    # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
-    
-    def test2(e): 
-        cursorX = e.x
-        cursorY = e.y
-        
-        # cette condition sert à verifier si la cursor est directement sur le carre rouge, si oui le jeu commence
-        jeu.move(aireDeJeu,cursorX, cursorY)
-
-
-    aireDeJeu.bind("<Button-1>", test)
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
