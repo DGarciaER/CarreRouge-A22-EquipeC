@@ -3,7 +3,18 @@ from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
-import time
+from datetime import datetime
+    
+    
+   
+    # test = input("appuye sur q");
+    # if(test == 'q'):
+       
+       
+    # print(tpsDebutPartie);
+    # print(tpsFinPartie);
+    
+    
 
 import c31Geometry2 as c31
 
@@ -23,6 +34,9 @@ class ControleurJeu:
         self.modeleJeu.afficher_bottomBorder()
         self.enMvt = False
         self.it = 0
+        self.tpsDebutPartie = 0
+        self.tpsFinPartie = 0
+        self.tpsTotal = 0
         
         self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
         self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
@@ -36,9 +50,13 @@ class ControleurJeu:
                 if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
                     if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
                         self.enMvt = True
+                        self.tpsDebutPartie = datetime.now();
                         
     def release(self, e):
         self.enMvt = False
+        self.tpsFinPartie = datetime.now();
+        self.tpsTotal = self.tpsFinPartie - self.tpsDebutPartie
+        print(self.tpsTotal, "secondes");
     
     def start(self, container):    
         self.vueJeu.clear(container)
@@ -77,7 +95,7 @@ class ControleurJeu:
                         
                     self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
                     self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
-                    self.modeleJeu.afficher_carreRouge()  
+                    self.modeleJeu.afficher_carreRouge()
             self.it += 1   
 
     
