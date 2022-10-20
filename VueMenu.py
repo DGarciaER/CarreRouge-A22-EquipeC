@@ -4,3 +4,4 @@ class VueMenu:
 
     def start(self):
         pass
+    

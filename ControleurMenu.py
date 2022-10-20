@@ -13,3 +13,13 @@
 
 #     def relancerSession(self, container):
 #         pass
+
+#----------------------------------------------------------
+#si il click sur nouvelle session:
+#fait....
+
+#si click sur menuscore :
+#fait....
+
+# si click sur quitter:
+#     fait...
