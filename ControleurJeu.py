@@ -26,6 +26,7 @@ class ControleurJeu:
         
         self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
         self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
+        self.modeleJeu.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
 
     # cette methode commence le jeu
     
@@ -35,6 +36,9 @@ class ControleurJeu:
                 if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
                     if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
                         self.enMvt = True
+                        
+    def release(self, e):
+        self.enMvt = False
     
     def start(self, container):    
         self.vueJeu.clear(container)
