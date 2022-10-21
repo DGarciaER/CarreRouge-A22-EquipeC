@@ -33,10 +33,10 @@ class ControleurJeu:
     # cette methode commence le jeu
     
     def click(self, e):
-        if  e.x > self.modeleJeu.carreRouge.get_position().x - 40/2:
-            if e.x < self.modeleJeu.carreRouge.get_position().x + 40/2:
-                if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
-                    if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
+        if  e.x > self.modeleJeu.carreRouge.get_position().x - 20:
+            if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
+                if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
+                    if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
                         self.enMvt = True
                         
     def release(self, e):
@@ -67,14 +67,51 @@ class ControleurJeu:
             # self.modeleJeu.afficher_carreRouge()
             # time.sleep(0.2)
             
+            vertical = False
+            horizontal = False
+            
             if self.enMvt == True:
                 if self.it % 3 == 0:
-                    for i in range(4):
-                        if  e.x > self.modeleJeu.carreRouge.get_position().x - 40/2:
-                            if e.x < self.modeleJeu.carreRouge.get_position().x + 40/2:
-                                if  e.y > self.modeleJeu.carreRouge.get_position().y - 40/2:
-                                    if e.y < self.modeleJeu.carreRouge.get_position().y + 40/2:
-                                        pass
+                    if self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[0].get_position().x + self.modeleJeu.listT[0][0]/2:
+                        horizontal = True
+                    if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[0].get_position().y + self.modeleJeu.listT[0][1]/2:
+                        vertical = True
+                    if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[0].get_position().x - self.modeleJeu.listT[0][0]/2:
+                        horizontal = True
+                    if self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[0].get_position().y - self.modeleJeu.listT[0][1]/2:
+                        vertical = True
+                    
+                    if vertical and horizontal:    
+                        print('hello')
+                    # for i in range(4):
+                                        
+                    #     if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                            # if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                            # if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
+                            # print('hello')
+                                        
+                        # # if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                        # elif  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                        #     if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
+                        #         print('hello')
+                        
+                        # if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                        #     if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                        #         if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2:
+                        #             if  self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
+                        #                 # if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
+                        #                 #     if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
+                        #                 #         if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
+                        #                 print('hello')
+                                        
+                        #  if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                        #         if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                        #         if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2:
+                        #             if  self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
+                        #                 # if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
+                        #                 #     if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
+                        #                 #         if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
+                        #                 print('hello')
                         
                         
                     self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
