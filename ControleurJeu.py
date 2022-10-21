@@ -135,8 +135,8 @@ class ControleurJeu:
 
         vecteur2x = element2.get_position().x
         vecteur2y = element2.get_position().y
-        demiLongeur2 = (element2.vertex[1] - element2.vertex[0])/2    #demi longeur element 2
-        demiHauteur2 = (element2.vertex[0] - element2.vertex[2])/2   #demi hauteur element 2
+        demiLongeur2 = abs(element2.vertex[1] - element2.vertex[0])/2    #demi longeur element 2
+        demiHauteur2 = abs(element2.vertex[0] - element2.vertex[2])/2   #demi hauteur element 2
 
         deltax = abs(vecteur2x - vecteur1x)
         deltay = abs(vecteur2y - vecteur1y)
@@ -144,10 +144,22 @@ class ControleurJeu:
         
         # cas du carreRouge
         # if demiLongeur1 == demiHauteur1:
-        if deltax < demiLongeur1 + demiLongeur2:
+        if deltax < (demiLongeur1 + demiLongeur2):
             self.enMvt = False
             self.gameOver = False
         elif  deltay < demiHauteur1 + demiHauteur2:
             self.enMvt = False
             self.gameOver = False
+            
+    def vertex(self, element):
+        # self.vertex = []
+        
+        # coin haut gauche
+        
+        # coin haut droit
+        
+        # coin bas gauche
+        
+        # coin bas droit
+        pass
         
