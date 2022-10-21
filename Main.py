@@ -1,4 +1,4 @@
-from ControleurJeu import ControleurJeu, Mouvement
+from ControleurJeu import ControleurJeu
 from functools import partial
 import time
 import tkinter as tk

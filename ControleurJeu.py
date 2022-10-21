@@ -22,11 +22,13 @@ class ControleurJeu:
         self.modeleJeu.afficher_topBorder()
         self.modeleJeu.afficher_bottomBorder()
         self.enMvt = False
+        self.gameOver = False
         self.it = 0
         
         self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
         self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
         self.modeleJeu.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
+        
 
     # cette methode commence le jeu
     
@@ -77,43 +79,38 @@ class ControleurJeu:
                         
                     self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
                     self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
-                    self.modeleJeu.afficher_carreRouge()  
+                    self.modeleJeu.afficher_carreRouge()
+                    for i in range(4):
+                        self.collision(self.modeleJeu.carreRouge, self.modeleJeu.listeRectangles[i])
+                        if self.gameOver == False:
+                            print("game over")
+                            return
+
             self.it += 1   
 
-    
-class Mouvement:
-    pass
-    
-    # #TODO faut-il deplacer cette methode dans une classe specifique au carreRouge? pareil pour les autres methodes d'initialisation..?
+    def collision(self, element1, element2):
+        vecteur1x = element1.get_position().x
+        vecteur1y = element1.get_position().y
+        demiLongeur1 = (element1.vertex[1] - element1.vertex[0])/2    #demi longeur element 1
+        demiHauteur1 = (element1.vertex[0] - element1.vertex[2])/2   #demi hauteur element 1
 
-    # # cette methode permet au carreRouge de se deplacer vers la gauche a l'écran
-    # #TODO ajuster la valeur de deplacement (réduire pour que l'on voit plus précisement ou se trouve le carre)
-    # def left(e):
-    #     x = -20
-    #     y = 0
-    #     airJeu.move(carreRouge, x, y)   # FIXME le format est canvas.move(img, x, y), il faut donc trouver une facon de rendre l'airJeu disponible au scope de toutes ces methodes
 
-    # # cette methode permet au carreRouge de se deplacer vers la droite a l'écran
-    # def right(e):
-    #     x = 20
-    #     y = 0
-    #     airJeu.move(carreRouge, x, y)
 
-    # # cette methode permet au carreRouge de se deplacer vers le haut a l'écran
-    # def up(e):
-    #     x = 0
-    #     y = -20
-    #     airJeu.move(carreRouge, x, y)
+        vecteur2x = element2.get_position().x
+        vecteur2y = element2.get_position().y
+        demiLongeur2 = (element2.vertex[1] - element2.vertex[0])/2    #demi longeur element 2
+        demiHauteur2 = (element2.vertex[0] - element2.vertex[2])/2   #demi hauteur element 2
 
-    # # cette methode permet au carreRouge de se deplacer vers le bas a l'écran
-    # def down(e):
-    #     x = 0
-    #     y = 20
-    #     airJeu.move(carreRouge, x, y)
+        deltax = abs(vecteur2x - vecteur1x)
+        deltay = abs(vecteur2y - vecteur1y)
 
-    #     # cette methode permet au carreRouge de se déplacer a l'ecran
-    # def move(e):
-    #     image = carreRouge
-    #     img = airJeu.create_image(e.x, e.y, image=image)
-
-    
+        
+        # cas du carreRouge
+        # if demiLongeur1 == demiHauteur1:
+        if deltax < demiLongeur1 + demiLongeur2:
+            self.enMvt = False
+            self.gameOver = False
+        elif  deltay < demiHauteur1 + demiHauteur2:
+            self.enMvt = False
+            self.gameOver = False
+        
