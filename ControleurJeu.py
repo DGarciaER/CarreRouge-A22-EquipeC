@@ -128,15 +128,40 @@ class ControleurJeu:
     def collision(self, element1, element2):
         vecteur1x = element1.get_position().x
         vecteur1y = element1.get_position().y
-        demiLongeur1 = (element1.vertex[1] - element1.vertex[0])/2    #demi longeur element 1
-        demiHauteur1 = (element1.vertex[0] - element1.vertex[2])/2   #demi hauteur element 1
+        demiLongeur1 = (element1._vertex[1] - element1._vertex[0])/2    #demi longeur element 1
+        demiHauteur1 = (element1._vertex[0] - element1._vertex[2])/2   #demi hauteur element 1
+        vertex1 = []
 
+        # coin haut gauche
+        vertex1[0] = element1.origine + c31.Vecteur((demiLongeur1 * -1), (demiHauteur1 * -1))
+        
+        # coin haut droit
+        vertex1[1] = element1.origine + c31.Vecteur(demiLongeur1, (demiHauteur1 * -1))
 
+        # coin bas gauche
+        vertex1[2] = element1.origine + c31.Vecteur((demiLongeur1 * -1), demiHauteur1)
+
+        # coin bas droit
+        vertex1[3] = element1.origine + c31.Vecteur(demiLongeur1, demiHauteur1)
 
         vecteur2x = element2.get_position().x
         vecteur2y = element2.get_position().y
-        demiLongeur2 = abs(element2.vertex[1] - element2.vertex[0])/2    #demi longeur element 2
-        demiHauteur2 = abs(element2.vertex[0] - element2.vertex[2])/2   #demi hauteur element 2
+        demiLongeur2 = abs(element2._vertex[1] - element2._vertex[0])/2    #demi longeur element 2
+        demiHauteur2 = abs(element2._vertex[0] - element2._vertex[2])/2   #demi hauteur element 2
+
+        vertex2 = []
+        
+        # coin haut gauche
+        vertex2[0] = element2.origine + c31.Vecteur((demiLongeur2 * -1), (demiHauteur2 * -1))
+        
+        # coin haut droit
+        vertex2[1] = element2.origine + c31.Vecteur(demiLongeur2, (demiHauteur2 * -1))
+
+        # coin bas gauche
+        vertex2[2] = element2.origine + c31.Vecteur((demiLongeur2 * -1), demiHauteur2)
+
+        # coin bas droit
+        vertex2[3] = element2.origine + c31.Vecteur(demiLongeur2, demiHauteur2)
 
         deltax = abs(vecteur2x - vecteur1x)
         deltay = abs(vecteur2y - vecteur1y)
@@ -151,15 +176,4 @@ class ControleurJeu:
             self.enMvt = False
             self.gameOver = False
             
-    def vertex(self, element):
-        # self.vertex = []
-        
-        # coin haut gauche
-        
-        # coin haut droit
-        
-        # coin bas gauche
-        
-        # coin bas droit
-        pass
         
