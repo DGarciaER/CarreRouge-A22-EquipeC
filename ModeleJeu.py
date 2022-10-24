@@ -3,6 +3,10 @@ import c31Geometry2 as c31
 
 
 class ModeleJeu:
+    
+    '''
+    Classe pour le la partie "Modèle" du modèle MVC (Model-View-Controller)
+    '''
 
     tailleCarreRouge = 40
     coteAirDeJeu = 450

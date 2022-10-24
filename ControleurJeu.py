@@ -1,14 +1,43 @@
 from cgi import test
+from itertools import count
 from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
+from datetime import datetime
+
 
 import c31Geometry2 as c31
 
-class ControleurJeu:
+class stopwatch():
+
+    '''
+    Cette classe s'occupe du générer le score/stopwatch lorsqu'on clique sur le carré rouge
+    '''
+
+    # counter = 66600
+    # running = False
     
+
+class ControleurJeu:
+    '''
+    Classe pour le la partie "Controleur jeu" du modèle MVC (Model-View-Controller)
+    
+    Attributs:
+        container:
+        enMouvement:
+        gameOver:
+        it:
+        modeleJeu:
+    '''
     def __init__(self, container):
+        '''
+        Le constructeur de la classe "ControleurJeu"
+        
+        Paramètres:
+            container:
+        '''
+
         self.vueJeu = VueJeu()
         self.modeleJeu = ModeleJeu(container)
         self.modeleJeu.afficher_carreRouge()
@@ -31,7 +60,12 @@ class ControleurJeu:
 
     # cette methode commence le jeu
     def click(self, e):
-
+        '''
+        Cette méthode commence le jeu lorsqu'on clique sur le carré rouge
+        
+        Paramètre:
+            e: L'événement (...)
+        '''
         CRL = self.modeleJeu.carreRouge.get_position().x - 20    #position gauche du carré rouge 
         CRR = self.modeleJeu.carreRouge.get_position().x + 20    #position droite du carré rouge
         CRT = self.modeleJeu.carreRouge.get_position().y - 20    #position haut du carré rouge
@@ -41,13 +75,33 @@ class ControleurJeu:
             self.enMouvement = True
                         
     def release(self, e):
+        '''
+        (...)
+        
+        Paramètre:
+            e: L'événement (...)
+        '''
         self.enMouvement = False
     
-    def start(self, container):    
+    def start(self, container):
+        '''
+        (...)
+        
+        Paramètre:
+            container: (...)
+            
+        '''    
         self.vueJeu.clear(container)
         
     def move(self, e):
-            
+        
+        '''
+        Cette méthode sert à bouger le carré rouge dans l'aire de jeu.
+        
+        Paramètres:
+            e: L'événement (...)
+        '''        
+        
         if self.enMouvement == True:
             if self.it % 3 == 0:    
                     

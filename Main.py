@@ -5,7 +5,9 @@ import tkinter as tk
 # import c31Geometry2 as c31
 
 if __name__ == "__main__":
-
+    '''
+    Le main du projet (...)
+    '''
     # créer une fenetre tk avec un titre, un background et des dimensions
     root = tk.Tk()
     root.title("Carré Rouge")
