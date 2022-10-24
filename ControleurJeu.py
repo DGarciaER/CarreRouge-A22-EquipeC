@@ -3,8 +3,6 @@ from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
-import random
-import time
 
 import c31Geometry2 as c31
 
@@ -22,7 +20,7 @@ class ControleurJeu:
         self.modeleJeu.afficher_rightBorder()
         self.modeleJeu.afficher_topBorder()
         self.modeleJeu.afficher_bottomBorder()
-        self.enMvt = False
+        self.enMouvement = False
         self.gameOver = False
         self.it = 0
         
@@ -32,25 +30,26 @@ class ControleurJeu:
         
 
     # cette methode commence le jeu
-    
     def click(self, e):
-        if  e.x > self.modeleJeu.carreRouge.get_position().x - 20:
-            if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
-                if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
-                    if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
-                        self.enMvt = True
+
+        CRL = self.modeleJeu.carreRouge.get_position().x - 20    #position gauche du carré rouge 
+        CRR = self.modeleJeu.carreRouge.get_position().x + 20    #position droite du carré rouge
+        CRT = self.modeleJeu.carreRouge.get_position().y - 20    #position haut du carré rouge
+        CRB = self.modeleJeu.carreRouge.get_position().y + 20    #position bas du carré rouge
+        
+        if  e.x > CRL and e.x < CRR and e.y > CRT and e.y < CRB:
+            self.enMouvement = True
                         
     def release(self, e):
-        self.enMvt = False
+        self.enMouvement = False
     
     def start(self, container):    
         self.vueJeu.clear(container)
         
     def move(self, e):
             
-        if self.enMvt == True:
-            if self.it % 3 == 0:
-                                
+        if self.enMouvement == True:
+            if self.it % 3 == 0:    
                     
                 self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
                 self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
@@ -60,44 +59,45 @@ class ControleurJeu:
                 
                 for i in range(4):
 
-                    CRX = self.modeleJeu.carreRouge.get_position().y
-                    CRY = self.modeleJeu.carreRouge.get_position().x
-                    CRL = CRY - 20
-                    CRR = CRY + 20
-                    CRT = CRX - 20
-                    CRB = CRX + 20
-                    PL = self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2
-                    PR = self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2
-                    PT = self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2
-                    PB = self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2
+                    CRY = self.modeleJeu.carreRouge.get_position().y    #position Y milieu du carré rouge 
+                    CRX = self.modeleJeu.carreRouge.get_position().x    #position X milieu du carré rouge 
+                    CRL = CRX - 20    #position gauche du carré rouge 
+                    CRR = CRX + 20    #position droite du carré rouge
+                    CRT = CRY - 20    #position haut du carré rouge
+                    CRB = CRY + 20    #position bas du carré rouge
+                    PL = self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2  #position gauche du pion
+                    PR = self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2  #position droite du pion
+                    PT = self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2  #position haut du pion
+                    PB = self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2  #position bas du pion
 
-                    if  CRT <= PB and CRT >= PT or CRX <= PB and CRX >= PT:
+                    # la logique des collisions
+                    if  CRT <= PB and CRT >= PT or CRY <= PB and CRY >= PT:
                         if  CRR >= PL and CRR <= PR:
                             collision = True
                             break
                         elif CRL <= PR and CRL >= PL:
                             collision = True
                             break
-                        elif CRY <= PR and CRY >= PL:
+                        elif CRX <= PR and CRX >= PL:
                             collision = True
                             break
 
-                    elif  CRB >= PT and CRB <= PB or CRX>= PT and CRX <= PB:
+                    elif  CRB >= PT and CRB <= PB or CRY>= PT and CRY <= PB:
                         if  CRR >= PL and CRR <= PR:
                             collision = True
                             break
                         elif CRL <= PR and CRL >= PL:
                             collision = True
                             break
-                        elif CRY <= PR and CRY >= PL:
+                        elif CRX <= PR and CRX >= PL:
                             collision = True
                             break                 
                 
-                if not collision:
-                    print('hello')
+                if collision:
+                    print(True)
                 else:
-                    print('not hello')
-                    
+                    print(False)
+
             self.it += 1
 
                
