@@ -3,6 +3,7 @@ from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
+import random
 import time
 
 import c31Geometry2 as c31
@@ -67,113 +68,117 @@ class ControleurJeu:
             # self.modeleJeu.afficher_carreRouge()
             # time.sleep(0.2)
             
-            vertical = False
-            horizontal = False
+            collision = False
             
+
             if self.enMvt == True:
                 if self.it % 3 == 0:
-                    if self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[0].get_position().x + self.modeleJeu.listT[0][0]/2:
-                        horizontal = True
-                    if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[0].get_position().y + self.modeleJeu.listT[0][1]/2:
-                        vertical = True
-                    if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[0].get_position().x - self.modeleJeu.listT[0][0]/2:
-                        horizontal = True
-                    if self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[0].get_position().y - self.modeleJeu.listT[0][1]/2:
-                        vertical = True
+
+
+                    for i in range(4):
+                        if  self.modeleJeu.carreRouge.get_position().y - 20 <= self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 and self.modeleJeu.carreRouge.get_position().y - 20 >= self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y <= self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 and self.modeleJeu.carreRouge.get_position().y >= self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
+                            if  self.modeleJeu.carreRouge.get_position().x + 20 >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x + 20 <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+                            elif self.modeleJeu.carreRouge.get_position().x - 20 <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x - 20 >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+                            elif self.modeleJeu.carreRouge.get_position().x <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+
+
+
+                        elif  self.modeleJeu.carreRouge.get_position().y + 20 >= self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2 and self.modeleJeu.carreRouge.get_position().y + 20 <= self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y>= self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2 and self.modeleJeu.carreRouge.get_position().y <= self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2:
+                            if  self.modeleJeu.carreRouge.get_position().x + 20 >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x + 20 <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+                            elif self.modeleJeu.carreRouge.get_position().x - 20 <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x - 20 >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+                            elif self.modeleJeu.carreRouge.get_position().x <= self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2 and self.modeleJeu.carreRouge.get_position().x >= self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
+                                collision = True
+                                break
+                        
+                        
+
+                    # if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[0].get_position().x - self.modeleJeu.listT[0][0]/2:
+                    #         collision = True
+                    # if self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[0].get_position().y - self.modeleJeu.listT[0][1]/2:
+                    #     collision = True
+
+
+
+
                     
-                    if vertical and horizontal:    
+                    
+                    
+                    if not collision:
                         print('hello')
-                    # for i in range(4):
-                                        
-                    #     if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
-                            # if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
-                            # if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
-                            # print('hello')
-                                        
-                        # # if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
-                        # elif  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
-                        #     if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2 or self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
-                        #         print('hello')
-                        
-                        # if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
-                        #     if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
-                        #         if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2:
-                        #             if  self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
-                        #                 # if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
-                        #                 #     if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
-                        #                 #         if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
-                        #                 print('hello')
-                                        
-                        #  if  self.modeleJeu.carreRouge.get_position().x - 20 < self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2:
-                        #         if  self.modeleJeu.carreRouge.get_position().x + 20 > self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2:
-                        #         if  self.modeleJeu.carreRouge.get_position().y - 20 < self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2:
-                        #             if  self.modeleJeu.carreRouge.get_position().y + 20 > self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2:
-                        #                 # if e.x < self.modeleJeu.carreRouge.get_position().x + 20:
-                        #                 #     if  e.y > self.modeleJeu.carreRouge.get_position().y - 20:
-                        #                 #         if e.y < self.modeleJeu.carreRouge.get_position().y + 20:
-                        #                 print('hello')
-                        
+                    else:
+                        print('not hello')
+                   
                         
                     self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
                     self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
                     self.modeleJeu.afficher_carreRouge()
-                    for i in range(4):
-                        self.collision(self.modeleJeu.carreRouge, self.modeleJeu.listeRectangles[i])
-                        if self.gameOver == False:
-                            print("game over")
-                            return
+                    # for i in range(4):
+                    #     self.collision(self.modeleJeu.carreRouge, self.modeleJeu.listeRectangles[i])
+                    #     if self.gameOver == False:
+                    #         print("game over")
+                    #         return
 
             self.it += 1   
 
-    def collisionCarre(self, carre, element):
-        vecteurCarrex = carre.get_position().x
-        vecteurCarrey = carre.get_position().y
-        demiLongeur1 = ModeleJeu.tailleCarreRouge/2    #demi longeur element 1
-        demiHauteur1 = ModeleJeu.tailleCarreRouge/2   #demi hauteur element 1
-        vertexCarre = []
+    # def collisionCarre(self, carre, element):
+    #     vecteurCarrex = carre.get_position().x
+    #     vecteurCarrey = carre.get_position().y
+    #     demiLongeur1 = ModeleJeu.tailleCarreRouge/2    #demi longeur element 1
+    #     demiHauteur1 = ModeleJeu.tailleCarreRouge/2   #demi hauteur element 1
+    #     vertexCarre = []
 
-        # coin haut gauche
-        vertexCarre[0] = carre.origine + c31.Vecteur((demiLongeur1 * -1), (demiHauteur1 * -1))
+    #     # coin haut gauche
+    #     vertexCarre[0] = carre.origine + c31.Vecteur((demiLongeur1 * -1), (demiHauteur1 * -1))
         
-        # coin haut droit
-        vertexCarre[1] = carre.origine + c31.Vecteur(demiLongeur1, (demiHauteur1 * -1))
+    #     # coin haut droit
+    #     vertexCarre[1] = carre.origine + c31.Vecteur(demiLongeur1, (demiHauteur1 * -1))
 
-        # coin bas gauche
-        vertexCarre[2] = carre.origine + c31.Vecteur((demiLongeur1 * -1), demiHauteur1)
+    #     # coin bas gauche
+    #     vertexCarre[2] = carre.origine + c31.Vecteur((demiLongeur1 * -1), demiHauteur1)
 
-        # coin bas droit
-        vertexCarre[3] = carre.origine + c31.Vecteur(demiLongeur1, demiHauteur1)
+    #     # coin bas droit
+    #     vertexCarre[3] = carre.origine + c31.Vecteur(demiLongeur1, demiHauteur1)
 
-        vecteur2x = element.get_position().x
-        vecteur2y = element.get_position().y
+    #     vecteur2x = element.get_position().x
+    #     vecteur2y = element.get_position().y
 
-        # comment acceder a la liste des dimensions des differentes rectangles 
-        # demiLongeur2 = ?    #demi longeur element 2
-        demiHauteur2 = abs(element._vertex[0] - element._vertex[2])/2   #demi hauteur element 2
+    #     # comment acceder a la liste des dimensions des differentes rectangles 
+    #     # demiLongeur2 = ?    #demi longeur element 2
+    #     demiHauteur2 = abs(element._vertex[0] - element._vertex[2])/2   #demi hauteur element 2
 
-        vertex2 = []
+    #     vertex2 = []
         
-        # coin haut gauche
-        vertex2[0] = element.origine + c31.Vecteur((demiLongeur2 * -1), (demiHauteur2 * -1))
+    #     # coin haut gauche
+    #     vertex2[0] = element.origine + c31.Vecteur((demiLongeur2 * -1), (demiHauteur2 * -1))
         
-        # coin haut droit
-        vertex2[1] = element.origine + c31.Vecteur(demiLongeur2, (demiHauteur2 * -1))
+    #     # coin haut droit
+    #     vertex2[1] = element.origine + c31.Vecteur(demiLongeur2, (demiHauteur2 * -1))
 
-        # coin bas gauche
-        vertex2[2] = element.origine + c31.Vecteur((demiLongeur2 * -1), demiHauteur2)
+    #     # coin bas gauche
+    #     vertex2[2] = element.origine + c31.Vecteur((demiLongeur2 * -1), demiHauteur2)
 
-        # coin bas droit
-        vertex2[3] = element.origine + c31.Vecteur(demiLongeur2, demiHauteur2)
+    #     # coin bas droit
+    #     vertex2[3] = element.origine + c31.Vecteur(demiLongeur2, demiHauteur2)
 
-        deltax = abs(vecteur2x - vecteurCarrex)
-        deltay = abs(vecteur2y - vecteurCarrey)
+    #     deltax = abs(vecteur2x - vecteurCarrex)
+    #     deltay = abs(vecteur2y - vecteurCarrey)
 
         
-        # cas du carreRouge
-        # if demiLongeur1 == demiHauteur1:
-        if deltax < (demiLongeur1 + demiLongeur2) and deltay < (demiHauteur1 + demiHauteur2):
-            self.enMvt = False
-            self.gameOver = True
+    #     # cas du carreRouge
+    #     # if demiLongeur1 == demiHauteur1:
+    #     if deltax < (demiLongeur1 + demiLongeur2) and deltay < (demiHauteur1 + demiHauteur2):
+    #         self.enMvt = False
+    #         self.gameOver = True
             
         # modele non fonctionnel de la methode collision (methode generale)
 
