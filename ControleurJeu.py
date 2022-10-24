@@ -49,7 +49,8 @@ class ControleurJeu:
             # time.sleep(0.2)
 
         self.modeleJeu.carreRouge.translateTo(c31.Vecteur(coordonneX,coordonneY))
-        self.modeleJeu.afficher_carreRouge()                 
+        self.modeleJeu.afficher_carreRouge() 
+                        
     
 class Mouvement:
     pass
