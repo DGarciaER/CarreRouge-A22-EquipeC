@@ -1,4 +1,5 @@
 from tkinter import Canvas
+import tkinter as tk
 import c31Geometry2 as c31
 
 
@@ -74,4 +75,8 @@ class ModeleJeu:
 
     """Cette méthode affiche le rectangle bottomBorder."""
     def afficher_bottomBorder(self):
-        self.bottomBorder.draw()    
+        self.bottomBorder.draw()
+        
+    def stopwatch(self):
+        stopwatch_label = tk.Label(text="00:00:00", font=("Bahnschrift", 25, "italic"))
+        pass    

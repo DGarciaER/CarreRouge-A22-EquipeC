@@ -33,6 +33,9 @@ if __name__ == "__main__":
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
     buttonsContainer.grid(column=1, row=2, padx=10, pady=15) # pour centrer et donner un padding
+    
+    stopwatch_label = tk.Label(text="00:00:00", font=("Bahnschrift", 25, "italic"))
+    stopwatch_label.grid(column=1, row=2, padx=10, pady=15)
 
     # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
     buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background="pink")
