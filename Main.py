@@ -12,7 +12,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Carré Rouge")
     root.config(background="white")
-    root.geometry("550x650")
+    root.geometry("550x700")
 
     # créer un containter et le centrer dans la fenetre tk
     mainContainer = tk.Frame(root, background="light blue")
@@ -30,12 +30,14 @@ if __name__ == "__main__":
     # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
 
+    stopwatch_label = tk.Label(mainContainer, text="00:00:00", font=("Bahnschrift", 15, "italic"))
+    stopwatch_label.grid(column=1, row=2)
+
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
-    buttonsContainer.grid(column=1, row=2, padx=10, pady=15) # pour centrer et donner un padding
+    buttonsContainer.grid(column=1, row=3, padx=10, pady=15) # pour centrer et donner un padding
     
-    stopwatch_label = tk.Label(text="00:00:00", font=("Bahnschrift", 25, "italic"))
-    stopwatch_label.grid(column=1, row=2, padx=10, pady=15)
+    
 
     # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
     buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background="pink")
