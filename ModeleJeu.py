@@ -6,9 +6,13 @@ class ModeleJeu:
 
     tailleCarreRouge = 40
     coteAirDeJeu = 450
+    collision = False
+    enMouvement = False
+    gameOver = False
+    it = 0
 
-    """Dans cette méthode (constructeur du ModeleJeu), on initialiser les éléments de l'aire de jeu."""
     def __init__(self, container):
+        """Dans cette méthode (constructeur du ModeleJeu), on initialiser les éléments de l'aire de jeu."""
         
         # initialisation du Carre carreRouge
         self.carreRouge = c31.Carre(container, c31.Vecteur(225,225),self.tailleCarreRouge,0, '#ff0000', '#ff0000', 0)

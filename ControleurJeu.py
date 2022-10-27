@@ -7,8 +7,14 @@ import tkinter as tk
 import c31Geometry2 as c31
 
 class ControleurJeu:
+    """
+    Cette classe contient les fonctionnalités du jeu
+    """
     
     def __init__(self, container):
+        """
+        parametres container
+        """
         self.vueJeu = VueJeu()
         self.modeleJeu = ModeleJeu(container)
         self.modeleJeu.afficher_carreRouge()
@@ -25,12 +31,17 @@ class ControleurJeu:
         self.it = 0
         
         self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
-        self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
+        self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.moveCR)
         self.modeleJeu.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
         
 
-    # cette methode commence le jeu
     def click(self, e):
+        """
+        Cette méthode détecte un click gauche de la souris sur le carré rouge et change la valeur de vérité de la variable enMouvement en conséquence.
+        La valeur de vérité de la variable enMouvement est une condition pour permettre le mouvement du carré rouge.
+        parametre:
+        event
+        """
 
         CRL = self.modeleJeu.carreRouge.get_position().x - 20    #position gauche du carré rouge 
         CRR = self.modeleJeu.carreRouge.get_position().x + 20    #position droite du carré rouge
@@ -39,14 +50,30 @@ class ControleurJeu:
         
         if  e.x > CRL and e.x < CRR and e.y > CRT and e.y < CRB:
             self.enMouvement = True
+            # methode moveP
                         
     def release(self, e):
+        """
+        Cette méthode détecte le release du boutton gauche de la souris.
+        parametre:
+        event
+        """
         self.enMouvement = False
     
-    def start(self, container):    
+    def start(self, container):
+        """
+        Cette méthode clear? le container.
+        parametre: 
+        container
+        """    
         self.vueJeu.clear(container)
         
-    def move(self, e):
+    def moveCR(self, e):
+        """
+        Cette méthode permet de bouger le carré rouge dans le canvas.
+        parametre:
+        event
+        """  
             
         if self.enMouvement == True:
             if self.it % 3 == 0:    
@@ -99,5 +126,12 @@ class ControleurJeu:
                     print(False)
 
             self.it += 1
+            
+    def moveP(self):
+        """ Cette méthode permet de bouger les pions (rectangle bleu) dans le canvas.
+        parametre:
+        event
+        """
+        pass
 
                
