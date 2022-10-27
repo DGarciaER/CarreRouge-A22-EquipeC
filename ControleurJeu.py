@@ -18,10 +18,10 @@ class ControleurJeu:
         self.vueJeu.afficherBordure(self.bordure)
         self.enMouvement = False
         self.gameOver = False
-        self.it = 0
+        self.iteration = 0
         
         self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
-        self.carreRouge.carreRouge.canvas.bind("<Motion>", self.move)
+        self.carreRouge.carreRouge.canvas.bind("<Motion>", self.moveCR)
         self.carreRouge.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
         
 
@@ -45,14 +45,14 @@ class ControleurJeu:
     def moveCR(self, e):
             
         if self.enMouvement == True:
-            if self.it % 3 == 0:    
+            if self.iteration % 3 == 0:    
                     
                 self.carreRouge.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
                 self.carreRouge.carreRouge.set_position(c31.Vecteur(e.x,e.y))
                 self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
                 
                 self.collision()
-            self.it += 1
+            self.iteration += 1
             
     def collision(self):
         collision = False
