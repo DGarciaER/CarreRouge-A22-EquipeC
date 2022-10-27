@@ -5,18 +5,42 @@ from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
 from datetime import datetime
+import Main
 
 
 import c31Geometry2 as c31
 
 class stopwatch():
-
     '''
     Cette classe s'occupe du générer le score/stopwatch lorsqu'on clique sur le carré rouge
     '''
 
-    # counter = 66600
-    # running = False
+    def __int__(self):
+        self.running = False
+        self.minutes = 0
+        self.seconds = 0
+        self.update_time = stopwatch_label.after(1000, update)
+
+    def start(self):
+        if not self.running:
+            update()
+            running = True
+
+    def pause(self):
+        if self.running:
+            stopwatch_label.after_cancel(update_time)
+            self.running = False;
+
+    def reset(self):
+        if self.running:
+            stopwatch_label.after_cancel(update_time)
+            running = False
+        self.minutes, self.seconds = 0
+
+        stopwatch_label.config(text='00:00 ')
+
+
+
     
 
 class ControleurJeu:
