@@ -17,21 +17,22 @@ class Rectangles:
         
         # initialisation des Rectangles (Pions)
         self.listeRectangles = [
-                    c31.Rectangle(container, c31.Vecteur(100, 100), self.listeTaillesRectangles[0][0], self.listeTaillesRectangles[0][1], 0, '#0000ff', '#0000ff', 0),
-                    c31.Rectangle(container, c31.Vecteur(300, 85), self.listeTaillesRectangles[1][0], self.listeTaillesRectangles[1][1], 0, '#0000ff', '#0000ff', 0),
-                    c31.Rectangle(container, c31.Vecteur(85, 350), self.listeTaillesRectangles[2][0], self.listeTaillesRectangles[2][1], 0, '#0000ff', '#0000ff', 0),
-                    c31.Rectangle(container, c31.Vecteur(355, 340), self.listeTaillesRectangles[3][0], self.listeTaillesRectangles[3][1], 0, '#0000ff', '#0000ff', 0)
+                    c31.Rectangle(container, c31.Vecteur(100, 100), self.listeTaillesRectangles[0][0], self.listeTaillesRectangles[0][1], 0, '#0000ff', '#0000ff', 0),  #rectangle haut gauche
+                    c31.Rectangle(container, c31.Vecteur(300, 85), self.listeTaillesRectangles[1][0], self.listeTaillesRectangles[1][1], 0, '#0000ff', '#0000ff', 0),   #rectange haut droite
+                    c31.Rectangle(container, c31.Vecteur(85, 350), self.listeTaillesRectangles[2][0], self.listeTaillesRectangles[2][1], 0, '#0000ff', '#0000ff', 0),   #rectange bas gauche
+                    c31.Rectangle(container, c31.Vecteur(355, 340), self.listeTaillesRectangles[3][0], self.listeTaillesRectangles[3][1], 0, '#0000ff', '#0000ff', 0)   #rectange bas droite
                     ]
 
 class Bordure:
     coteAirDeJeu = 450
+    listeTaillesBordure = [[50, 450], [50, 450], [450, 50], [450, 50]]
     
     def __init__(self, container):
         
         # initialisation de la Bordure
         self.listeBordures = [
-                    c31.Rectangle(container, c31.Vecteur(25, self.coteAirDeJeu/2), 50, 450, 0,'black','black',0),
-                    c31.Rectangle(container, c31.Vecteur(425, self.coteAirDeJeu/2), 50, 450, 0,'black','black',0),
-                    c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 25), 450, 50, 0,'black','black',0),
-                    c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 425), 450, 50, 0,'black','black',0)
+                    c31.Rectangle(container, c31.Vecteur(25, self.coteAirDeJeu/2), self.listeTaillesBordure[0][0], self.listeTaillesBordure[0][1], 0,'black','black',0),   #bordure gauche
+                    c31.Rectangle(container, c31.Vecteur(425, self.coteAirDeJeu/2), self.listeTaillesBordure[1][0], self.listeTaillesBordure[1][1], 0,'black','black',0),  #bordure droite
+                    c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 25), self.listeTaillesBordure[2][0], self.listeTaillesBordure[2][1], 0,'black','black',0),   #bordure haut
+                    c31.Rectangle(container, c31.Vecteur(self.coteAirDeJeu/2, 425), self.listeTaillesBordure[3][0], self.listeTaillesBordure[3][1], 0,'black','black',0)   #bordure bas
         ]
