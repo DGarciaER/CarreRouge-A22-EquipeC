@@ -42,7 +42,7 @@ class ControleurJeu:
     def start(self, container):    
         self.vueJeu.clear(container)
         
-    def move(self, e):
+    def moveCR(self, e):
             
         if self.enMouvement == True:
             if self.it % 3 == 0:    

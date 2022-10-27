@@ -4,6 +4,7 @@ class CarreRouge:
     tailleCarreRouge = 40
     
     def __init__(self, container):
+        """Dans cette méthode (constructeur du ModeleJeu), on initialiser les éléments de l'aire de jeu."""
         
         # initialisation du Carre Rouge
         self.carreRouge = c31.Carre(container, c31.Vecteur(225,225),self.tailleCarreRouge,0, '#ff0000', '#ff0000', 0)

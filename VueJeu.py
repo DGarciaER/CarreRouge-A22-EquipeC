@@ -16,6 +16,32 @@ class VueJeu:
         for i in range(4):
             bordure.listeBordures[i].draw()
             
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
                 
     # # cette methose suprime la fenetre tout ce qui est dans la fenetre
     # def clear(self, container):
