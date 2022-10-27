@@ -3,7 +3,7 @@ from functools import partial
 import time
 import tkinter as tk
 # import c31Geometry2 as c31
-
+lancement_chrono = True;
 if __name__ == "__main__":
     '''
     Le main du projet (...)
@@ -30,9 +30,47 @@ if __name__ == "__main__":
     # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
 
-    #créer le texte pour le score (stopwatch)
-    stopwatch_label = tk.Label(mainContainer, text="00:00 ", font=("Bahnschrift", 15, "italic"))
+    #créer le label pour le chronometre
+    stopwatch_label = tk.Label(mainContainer, text="00:0000 ", font=("Bahnschrift", 15, "italic"))
     stopwatch_label.grid(column=1, row=2)
+    class stopwatch():
+        '''
+     Cette classe s'occupe du générer le score/stopwatch lorsqu'on clique sur le carré rouge
+     '''
+    
+
+        def __int__(self):
+            self.running = True
+            self.seconds = 0
+            self.milliseconds = 0
+            self.update_time = stopwatch_label.after(1, update)
+
+        def start(self):
+            if not self.running:
+                update()
+                running = True
+
+        def pause(self):
+            if self.running:
+                stopwatch_label.after_cancel(self.update_time)
+                self.running = False;
+
+        def reset(self):
+            if self.running:
+                stopwatch_label.after_cancel(self.update_time)
+                running = False
+            self.seconds, self.milliseconds = 0
+
+            stopwatch_label.config(text='00:0000 ')
+            
+        def update(self):
+            self.milliseconds += 1
+            if self.milliseconds == 1000:
+                self.seconds = 1
+            seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
+            milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
+            stopwatch_label.config(text= seconds_string + ":" + milliseconds_string)
+            self.update_time = stopwatch_label.after(1,update);
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
@@ -49,6 +87,11 @@ if __name__ == "__main__":
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
     buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink")
     buttonQuitter.grid(column=3, row=1, padx=15)
+    
+    stopWatch =  stopwatch()
+    stopWatch.start();
+    
+    
     
     # boocler la fenetre tk
     root.mainloop()

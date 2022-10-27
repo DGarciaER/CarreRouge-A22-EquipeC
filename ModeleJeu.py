@@ -3,6 +3,9 @@ import tkinter as tk
 import c31Geometry2 as c31
 
 
+
+
+
 class ModeleJeu:
     
     '''
