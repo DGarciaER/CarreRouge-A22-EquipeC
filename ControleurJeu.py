@@ -26,7 +26,7 @@ class ControleurJeu:
         self.enMouvement = False                                # boolean qui change selon les evenements click ou release du B1 de la souris, permet de savoir quand deplacer le carre rouge et quand le laisser statique 
         self.gameOver = False                                   # boolean qui nous permet d'arreter le jeu lorsqu'il y a une collision
         self.iteration = 0                                      # valeur qui permet de ralentir l'affichage du carre rouge pour assurer une belle presentation
-        self.cptrMoveRB = 0                 # temp, pour savoir quand initialiser le mouvement des R et quand utiliser les redirections
+        self.cptrMoveRB = True                 # temp, pour savoir quand initialiser le mouvement des R et quand utiliser les redirections
         self.inPlay = False                 # temp, pour appeler moveR tant que inPLay est true et gameOver est false
 
         self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
@@ -145,6 +145,17 @@ class ControleurJeu:
         
         self.vitesse = 5
 
+            
+        # droiteHaut = [False, False, False, False]
+        # droiteBas = [False, False, False, False]
+        # gaucheHaut = [False, False, False, False]
+        # gaucheBas = [False, False, False, False]
+        
+        droiteHaut = 
+        droiteBas = c31.Vecteur(droite, bas)
+        gaucheHaut = 
+        gaucheBas = 
+
         for i in range(4):
 
             RBY = self.rectangles.listeRectangles[i].get_position().y    #position Y milieu du pion 
@@ -161,19 +172,24 @@ class ControleurJeu:
             droite = self.rectangles.listeRectangles[i].get_position().x + self.vitesse
             bas = self.rectangles.listeRectangles[i].get_position().y + self.vitesse
 
-            if self.cptrMoveRB == 0:        # si cest premier appel de moveR, on initialiser avec ces valeurs, sinon on utilise les conditions des collisions en-dessous
+            if self.cptrMoveRB == True:        # si cest premier appel de moveR, on initialiser avec ces valeurs, sinon on utilise les conditions des collisions en-dessous
                 if i == 0:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
+                    droiteBas[i] = True
                 if i == 1:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas))
+                    gaucheBas[i] = True
                 if i == 2:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut))
+                    droiteHaut[i] = True
                 if i == 3:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut))
+                    gaucheHaut[i] = True
+
                 # fin
             
             # detecte les collisions des rectangles avec la bordure externe
@@ -181,16 +197,42 @@ class ControleurJeu:
             # chaque bordure haut/bas change seulement direction sur haut ou bas
             
             # NOTE: visuelement, les rectangles rebondissent, mais pas leur position 
+
             
             if  RBT <= BT:
-                if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
+                
+                if droiteHaut[i] == True:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
+                    droiteHaut[i] == False
+                    droiteBas[i] = True
+                elif gaucheHaut[i] == True:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
+                    gaucheHaut[i] == False 
+                    gaucheBas[i] = True
+                    
+                      
+                
+                    
+                
+                
+                
+                
+                
+                
+                
+                
+                # if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas)) 
                     self.touchBorder = True
-                elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut)):
+                    self.cptrMoveRB = False
+                # elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 # methode pour rebondir
                 # changer direction en y pour bas
                 print("rectangle est sorti de l'aire de jeu")  # temp pour debug
@@ -199,10 +241,12 @@ class ControleurJeu:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 # methode pour rebondir
                 # changer direction en y pour haut
                 print("rectangle est sorti de l'aire de jeu")  # temp pour debug
@@ -211,10 +255,12 @@ class ControleurJeu:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 # methode pour rebondir
                 # changer direction en x pour gauche
                 print("rectangle est sorti de l'aire de jeu")  # temp pour debug
@@ -223,51 +269,18 @@ class ControleurJeu:
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut)) 
                     self.touchBorder = True
+                    self.cptrMoveRB = False
                 # methode pour rebondir
                 # changer direction en x pour gauche
                 print("rectangle est sorti de l'aire de jeu")  # temp pour debug
 
-            # initialisation non optimisee
-
-            # gauche = self.rectangles.listeRectangles[0].get_position().x - self.vitesse
-            # haut = self.rectangles.listeRectangles[0].get_position().y - self.vitesse
-            # droite = self.rectangles.listeRectangles[0].get_position().x + self.vitesse
-            # bas = self.rectangles.listeRectangles[0].get_position().y + self.vitesse
-
-            # self.rectangles.listeRectangles[0].translateTo(c31.Vecteur(droite, bas))
-            # self.rectangles.listeRectangles[0].set_position(c31.Vecteur(droite, bas))
-
-            # gauche = self.rectangles.listeRectangles[1].get_position().x - self.vitesse
-            # haut = self.rectangles.listeRectangles[1].get_position().y - self.vitesse
-            # droite = self.rectangles.listeRectangles[1].get_position().x + self.vitesse
-            # bas = self.rectangles.listeRectangles[1].get_position().y + self.vitesse
-
-            # self.rectangles.listeRectangles[1].translateTo(c31.Vecteur(gauche, bas))
-            # self.rectangles.listeRectangles[1].set_position(c31.Vecteur(gauche, bas))
-
-            # gauche = self.rectangles.listeRectangles[2].get_position().x - self.vitesse`
-            # haut = self.rectangles.listeRectangles[2].get_position().y - self.vitesse
-            # droite = self.rectangles.listeRectangles[2].get_position().x + self.vitesse
-            # bas = self.rectangles.listeRectangles[2].get_position().y + self.vitesse
-
-            # self.rectangles.listeRectangles[2].translateTo(c31.Vecteur(droite, haut))
-            # self.rectangles.listeRectangles[2].set_position(c31.Vecteur(droite, haut))
-
-            # gauche = self.rectangles.listeRectangles[3].get_position().x - self.vitesse
-            # haut = self.rectangles.listeRectangles[3].get_position().y - self.vitesse
-            # droite = self.rectangles.listeRectangles[3].get_position().x + self.vitesse
-            # bas = self.rectangles.listeRectangles[3].get_position().y + self.vitesse
-
-            # self.rectangles.listeRectangles[3].translateTo(c31.Vecteur(gauche, haut))
-            # self.rectangles.listeRectangles[3].set_position(c31.Vecteur(gauche, haut))
-
-            self.vueJeu.afficherRectanglesBlues(self.rectangles)
             
-            self.rectangles.listeRectangles[i].set_position(self.rectangles.listeRectangles[i].get_position()) 
+            # self.rectangles.listeRectangles[i].set_position(self.rectangles.listeRectangles[i].get_position()) 
 
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
         # self.cptrMoveRB += 1
