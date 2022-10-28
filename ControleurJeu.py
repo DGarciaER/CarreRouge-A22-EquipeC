@@ -86,10 +86,10 @@ class ControleurJeu:
         
         collision = False
         
-        # BL = self.bordure.listeBordures[0].get_position().x + self.bordure.listeTaillesBordure[0][0]/2  #position gauche de la bordure
-        # BR = self.bordure.listeBordures[1].get_position().x - self.bordure.listeTaillesBordure[1][0]/2  #position droite de la bordure
-        # BT = self.bordure.listeBordures[2].get_position().y + self.bordure.listeTaillesBordure[2][1]/2  #position haut de la bordure
-        # BB = self.bordure.listeBordures[3].get_position().y - self.bordure.listeTaillesBordure[3][1]/2  #position bas de la bordure
+        BL = self.bordure.listeBordures[0].get_position().x + self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche interne
+        BR = self.bordure.listeBordures[1].get_position().x - self.bordure.listeTaillesBordure[1][0]/2  #position bordure droite interne
+        BT = self.bordure.listeBordures[2].get_position().y + self.bordure.listeTaillesBordure[2][1]/2  #position bordure haut interne
+        BB = self.bordure.listeBordures[3].get_position().y - self.bordure.listeTaillesBordure[3][1]/2  #position bordure bas interne
         
         CRY = self.carreRouge.carreRouge.get_position().y    #position Y milieu du carré rouge 
         CRX = self.carreRouge.carreRouge.get_position().x    #position X milieu du carré rouge 
@@ -98,13 +98,10 @@ class ControleurJeu:
         CRT = CRY - 20    #position haut du carré rouge
         CRB = CRY + 20    #position bas du carré rouge
         
-        # if  CRT <= BB and CRT >= BT or CRY <= BB and CRY >= BT or CRB >= BT and CRB <= BB:
-        #         if  CRR >= BL and CRR <= BR or CRL <= BR and CRL >= BL or CRX <= BR and CRX >= BL:
-        #             collision = False
-        #             print("BF")  # temp pour debug
-        #         else:
-        #             collision = True
-        #             print("BT")  # temp pour debug
+        # detecte les collisions du carre rouge avec la bordure interne
+        if  CRT <= BT or CRB >= BB or CRR >= BR or CRL <= BL: 
+            collision = True
+            print("carre rouge est sorti de l'aire de jeu")  # temp pour debug
             
         for i in range(4):
             
@@ -117,7 +114,6 @@ class ControleurJeu:
             if  CRT <= RB and CRT >= RT or CRY <= RB and CRY >= RT or CRB >= RT and CRB <= RB:
                 if  CRR >= RL and CRR <= RR or CRL <= RR and CRL >= RL or CRX <= RR and CRX >= RL:
                     collision = True
-                    print("RB") # temp pour debug
                     break
                 
                     
@@ -138,53 +134,105 @@ class ControleurJeu:
         # chaque bordure haut/bas change seulement direction sur haut ou bas 
         
         self.touchBorder = False
-        
-        for i in range(4):
 
-            RBY = self.rectangles.listeRectangles[i].get_position().y    #position Y milieu du carré rouge 
-            RBX = self.rectangles.listeRectangles[i].get_position().x    #position X milieu du carré rouge 
-            RBL = RBX - self.rectangles.listeTaillesRectangles[i][0]/2    #position gauche du carré rouge 
-            RBR = RBX + self.rectangles.listeTaillesRectangles[i][0]/2    #position droite du carré rouge
-            RBT = RBY - self.rectangles.listeTaillesRectangles[i][1]/2    #position haut du carré rouge
-            RBB = RBY + self.rectangles.listeTaillesRectangles[i][1]/2    #position bas du carré rouge
-            RL = self.rectangles.listeRectangles[i].get_position().x - self.rectangles.listeTaillesRectangles[i][0]/2  #position gauche du pion
-            RR = self.rectangles.listeRectangles[i].get_position().x + self.rectangles.listeTaillesRectangles[i][0]/2  #position droite du pion
-            RT = self.rectangles.listeRectangles[i].get_position().y - self.rectangles.listeTaillesRectangles[i][1]/2  #position haut du pion
-            RB = self.rectangles.listeRectangles[i].get_position().y + self.rectangles.listeTaillesRectangles[i][1]/2  #position bas du pion
-
-            # la logique des collisions
-            if  RBT <= RB and RBT >= RT or RBY <= RB and RBY >= RT or RBB >= RT and RBB <= RB:
-                if  RBR >= RL and RBR <= RR or RBL <= RR and RBL >= RL or RBX <= RR and RBX >= RL:
-                    self.touchBorder = True
-                    break
+        BL = self.bordure.listeBordures[0].get_position().x - self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche externe
+        BR = self.bordure.listeBordures[1].get_position().x + self.bordure.listeTaillesBordure[1][0]/2  #position bordure droite externe
+        BT = self.bordure.listeBordures[2].get_position().y - self.bordure.listeTaillesBordure[2][1]/2  #position bordure haut externe
+        BB = self.bordure.listeBordures[3].get_position().y + self.bordure.listeTaillesBordure[3][1]/2  #position bordure bas externe
         
         self.vitesse = 5
-        
-        # self.rectangles.listeRectangles[0].translate(c31.Vecteur.bas() * self.vitesse)
-        # self.rectangles.listeRectangles[0].translate(c31.Vecteur.droite() * self.vitesse)
-        
-        gauche = self.rectangles.listeRectangles[0].get_position().x - self.vitesse
-        haut = self.rectangles.listeRectangles[0].get_position().y - self.vitesse
-        droite = self.rectangles.listeRectangles[0].get_position().x + self.vitesse
-        bas = self.rectangles.listeRectangles[0].get_position().y + self.vitesse
 
-        self.rectangles.listeRectangles[0].translateTo(c31.Vecteur(droite, bas))
-        self.rectangles.listeRectangles[0].set_position(c31.Vecteur(droite, bas))
-
-        self.vueJeu.afficherRectanglesBlues(self.rectangles)
-            
-        
-        # self.rectangles.listeRectangles[1].translate(c31.Vecteur.bas() * self.vitesse)
-        # self.rectangles.listeRectangles[1].translate(c31.Vecteur.gauche() * self.vitesse)
-        
-        # self.rectangles.listeRectangles[2].translate(c31.Vecteur.haut() * self.vitesse)
-        # self.rectangles.listeRectangles[2].translate(c31.Vecteur.droite() * self.vitesse)
-        
-        # self.rectangles.listeRectangles[3].translate(c31.Vecteur.haut() * self.vitesse)
-        # self.rectangles.listeRectangles[3].translate(c31.Vecteur.gauche() * self.vitesse)
-        
         for i in range(4):
+
+            RBY = self.rectangles.listeRectangles[i].get_position().y    #position Y milieu du pion 
+            RBX = self.rectangles.listeRectangles[i].get_position().x    #position X milieu du pion 
+            RBL = RBX - self.rectangles.listeTaillesRectangles[i][0]/2    #position gauche du pion 
+            RBR = RBX + self.rectangles.listeTaillesRectangles[i][0]/2    #position droite du pion
+            RBT = RBY - self.rectangles.listeTaillesRectangles[i][1]/2    #position haut du pion
+            RBB = RBY + self.rectangles.listeTaillesRectangles[i][1]/2    #position bas du pion
+            
+            # detecte les collisions des rectangles avec la bordure externe
+            if  RBT <= BT:
+                self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en y pour bas
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBB >= BB:
+                self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en y pour haut
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBR >= BR:
+                self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en x pour gauche
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBL <= BL: 
+                self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en x pour gauche
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+        
+        
+        
+            # for i in range(4):
+                # peut etre utilise pour initialiser dans une methode commencer
+            # debut methode
+            gauche = self.rectangles.listeRectangles[i].get_position().x - self.vitesse
+            haut = self.rectangles.listeRectangles[i].get_position().y - self.vitesse
+            droite = self.rectangles.listeRectangles[i].get_position().x + self.vitesse
+            bas = self.rectangles.listeRectangles[i].get_position().y + self.vitesse
+
+            if i == 0:
+                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
+            if i == 1:
+                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
+                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas))
+            if i == 2:
+                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
+                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut))
+            if i == 3:
+                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
+                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut))
+            # fin
+
+            # initialisation non optimisee
+
+            # gauche = self.rectangles.listeRectangles[0].get_position().x - self.vitesse
+            # haut = self.rectangles.listeRectangles[0].get_position().y - self.vitesse
+            # droite = self.rectangles.listeRectangles[0].get_position().x + self.vitesse
+            # bas = self.rectangles.listeRectangles[0].get_position().y + self.vitesse
+
+            # self.rectangles.listeRectangles[0].translateTo(c31.Vecteur(droite, bas))
+            # self.rectangles.listeRectangles[0].set_position(c31.Vecteur(droite, bas))
+
+            # gauche = self.rectangles.listeRectangles[1].get_position().x - self.vitesse
+            # haut = self.rectangles.listeRectangles[1].get_position().y - self.vitesse
+            # droite = self.rectangles.listeRectangles[1].get_position().x + self.vitesse
+            # bas = self.rectangles.listeRectangles[1].get_position().y + self.vitesse
+
+            # self.rectangles.listeRectangles[1].translateTo(c31.Vecteur(gauche, bas))
+            # self.rectangles.listeRectangles[1].set_position(c31.Vecteur(gauche, bas))
+
+            # gauche = self.rectangles.listeRectangles[2].get_position().x - self.vitesse`
+            # haut = self.rectangles.listeRectangles[2].get_position().y - self.vitesse
+            # droite = self.rectangles.listeRectangles[2].get_position().x + self.vitesse
+            # bas = self.rectangles.listeRectangles[2].get_position().y + self.vitesse
+
+            # self.rectangles.listeRectangles[2].translateTo(c31.Vecteur(droite, haut))
+            # self.rectangles.listeRectangles[2].set_position(c31.Vecteur(droite, haut))
+
+            # gauche = self.rectangles.listeRectangles[3].get_position().x - self.vitesse
+            # haut = self.rectangles.listeRectangles[3].get_position().y - self.vitesse
+            # droite = self.rectangles.listeRectangles[3].get_position().x + self.vitesse
+            # bas = self.rectangles.listeRectangles[3].get_position().y + self.vitesse
+
+            # self.rectangles.listeRectangles[3].translateTo(c31.Vecteur(gauche, haut))
+            # self.rectangles.listeRectangles[3].set_position(c31.Vecteur(gauche, haut))
+
+            self.vueJeu.afficherRectanglesBlues(self.rectangles)
+            
             self.rectangles.listeRectangles[i].set_position(self.rectangles.listeRectangles[i].get_position()) 
 
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
-        
