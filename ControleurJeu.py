@@ -1,4 +1,5 @@
 from cgi import test
+from operator import truediv
 from VueJeu import VueJeu
 from ModeleJeu import Bordure, CarreRouge, Rectangles
 from functools import partial
@@ -22,10 +23,12 @@ class ControleurJeu:
         self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
         self.vueJeu.afficherBordure(self.bordure)
-        self.enMouvement = False
-        self.gameOver = False
-        self.iteration = 0
-        
+        self.enMouvement = False                                # boolean qui change selon les evenements click ou release du B1 de la souris, permet de savoir quand deplacer le carre rouge et quand le laisser statique 
+        self.gameOver = False                                   # boolean qui nous permet d'arreter le jeu lorsqu'il y a une collision
+        self.iteration = 0                                      # valeur qui permet de ralentir l'affichage du carre rouge pour assurer une belle presentation
+        self.cptrMoveRB = 0                 # temp, pour savoir quand initialiser le mouvement des R et quand utiliser les redirections
+        self.inPlay = False                 # temp, pour appeler moveR tant que inPLay est true et gameOver est false
+
         self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
         self.carreRouge.carreRouge.canvas.bind("<Motion>", self.moveCR)
         self.carreRouge.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
@@ -47,6 +50,7 @@ class ControleurJeu:
         
         if  e.x > CRL and e.x < CRR and e.y > CRT and e.y < CRB:
             self.enMouvement = True
+            self.inPlay = True
                         
     def release(self, e):
         """
@@ -78,7 +82,7 @@ class ControleurJeu:
                 self.carreRouge.carreRouge.set_position(c31.Vecteur(e.x,e.y))
                 self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
                 
-                self.moveR()
+                # self.moveR()
                 self.collision()
             self.iteration += 1
             
@@ -101,6 +105,7 @@ class ControleurJeu:
         # detecte les collisions du carre rouge avec la bordure interne
         if  CRT <= BT or CRB >= BB or CRR >= BR or CRL <= BL: 
             collision = True
+            self.gameOver = True
             print("carre rouge est sorti de l'aire de jeu")  # temp pour debug
             
         for i in range(4):
@@ -114,6 +119,7 @@ class ControleurJeu:
             if  CRT <= RB and CRT >= RT or CRY <= RB and CRY >= RT or CRB >= RT and CRB <= RB:
                 if  CRR >= RL and CRR <= RR or CRL <= RR and CRL >= RL or CRX <= RR and CRX >= RL:
                     collision = True
+                    self.gameOver = True
                     break
                 
                     
@@ -150,52 +156,78 @@ class ControleurJeu:
             RBR = RBX + self.rectangles.listeTaillesRectangles[i][0]/2    #position droite du pion
             RBT = RBY - self.rectangles.listeTaillesRectangles[i][1]/2    #position haut du pion
             RBB = RBY + self.rectangles.listeTaillesRectangles[i][1]/2    #position bas du pion
-            
-            # detecte les collisions des rectangles avec la bordure externe
-            if  RBT <= BT:
-                self.touchBorder = True
-                # methode pour rebondir
-                # changer direction en y pour bas
-                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
-            if RBB >= BB:
-                self.touchBorder = True
-                # methode pour rebondir
-                # changer direction en y pour haut
-                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
-            if RBR >= BR:
-                self.touchBorder = True
-                # methode pour rebondir
-                # changer direction en x pour gauche
-                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
-            if RBL <= BL: 
-                self.touchBorder = True
-                # methode pour rebondir
-                # changer direction en x pour gauche
-                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
-        
-        
-        
-            # for i in range(4):
-                # peut etre utilise pour initialiser dans une methode commencer
+
+            # peut etre utilise pour initialiser dans une methode commencer
             # debut methode
             gauche = self.rectangles.listeRectangles[i].get_position().x - self.vitesse
             haut = self.rectangles.listeRectangles[i].get_position().y - self.vitesse
             droite = self.rectangles.listeRectangles[i].get_position().x + self.vitesse
             bas = self.rectangles.listeRectangles[i].get_position().y + self.vitesse
 
-            if i == 0:
-                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
-                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
-            if i == 1:
-                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
-                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas))
-            if i == 2:
-                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
-                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut))
-            if i == 3:
-                self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
-                self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut))
-            # fin
+            if self.cptrMoveRB == 0:        # si cest premier appel de moveR, on initialiser avec ces valeurs, sinon on utilise les conditions des collisions en-dessous
+                if i == 0:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas))
+                if i == 1:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas))
+                if i == 2:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut))
+                if i == 3:
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut))
+                # fin
+            
+            # detecte les collisions des rectangles avec la bordure externe
+            if  RBT <= BT:
+                if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas)) 
+                    self.touchBorder = True
+                elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas)) 
+                    self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en y pour bas
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBB >= BB:
+                if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut)) 
+                    self.touchBorder = True
+                elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut)) 
+                    self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en y pour haut
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBR >= BR:
+                if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, bas)) 
+                    self.touchBorder = True
+                elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(gauche, haut)) 
+                    self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en x pour gauche
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
+            if RBL <= BL: 
+                if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas)) 
+                    self.touchBorder = True
+                elif self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, haut)):
+                    self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut))
+                    self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, haut)) 
+                    self.touchBorder = True
+                # methode pour rebondir
+                # changer direction en x pour gauche
+                print("rectangle est sorti de l'aire de jeu")  # temp pour debug
 
             # initialisation non optimisee
 
@@ -236,3 +268,10 @@ class ControleurJeu:
             self.rectangles.listeRectangles[i].set_position(self.rectangles.listeRectangles[i].get_position()) 
 
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
+        self.cptrMoveRB += 1
+
+
+        # condition pour appeler moveR, il reste a le placer au bon endroit...
+        if self.inPlay and self.gameOver == False:
+            self.moveR()
+
