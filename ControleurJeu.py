@@ -82,7 +82,7 @@ class ControleurJeu:
                 self.carreRouge.carreRouge.set_position(c31.Vecteur(e.x,e.y))
                 self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
                 
-                # self.moveR()
+                self.moveR()
                 self.collision()
             self.iteration += 1
             
@@ -136,9 +136,6 @@ class ControleurJeu:
         event
         """
         
-        # chaque bordure droite/gauche change seulement direction sur droite ou gauche 
-        # chaque bordure haut/bas change seulement direction sur haut ou bas 
-        
         self.touchBorder = False
 
         BL = self.bordure.listeBordures[0].get_position().x - self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche externe
@@ -180,6 +177,11 @@ class ControleurJeu:
                 # fin
             
             # detecte les collisions des rectangles avec la bordure externe
+            # chaque bordure droite/gauche change seulement direction sur droite ou gauche 
+            # chaque bordure haut/bas change seulement direction sur haut ou bas
+            
+            # NOTE: visuelement, les rectangles rebondissent, mais pas leur position 
+            
             if  RBT <= BT:
                 if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, haut)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
@@ -216,7 +218,7 @@ class ControleurJeu:
                 # methode pour rebondir
                 # changer direction en x pour gauche
                 print("rectangle est sorti de l'aire de jeu")  # temp pour debug
-            if RBL <= BL: 
+            if RBL <= BL:
                 if self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(gauche, bas)):
                     self.rectangles.listeRectangles[i].translateTo(c31.Vecteur(droite, bas))
                     self.rectangles.listeRectangles[i].set_position(c31.Vecteur(droite, bas)) 
@@ -268,10 +270,10 @@ class ControleurJeu:
             self.rectangles.listeRectangles[i].set_position(self.rectangles.listeRectangles[i].get_position()) 
 
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
-        self.cptrMoveRB += 1
+        # self.cptrMoveRB += 1
 
 
         # condition pour appeler moveR, il reste a le placer au bon endroit...
-        if self.inPlay and self.gameOver == False:
-            self.moveR()
+        # if self.inPlay and self.gameOver == False:
+        #     self.moveR()
 
