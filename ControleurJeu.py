@@ -36,15 +36,12 @@ class ControleurJeu:
         CRR = self.modeleJeu.carreRouge.get_position().x + 20    #position droite du carré rouge
         CRT = self.modeleJeu.carreRouge.get_position().y - 20    #position haut du carré rouge
         CRB = self.modeleJeu.carreRouge.get_position().y + 20    #position bas du carré rouge
-        
+
         if  e.x > CRL and e.x < CRR and e.y > CRT and e.y < CRB:
             self.enMouvement = True
                         
     def release(self, e):
         self.enMouvement = False
-    
-    def start(self, container):    
-        self.vueJeu.clear(container)
         
     def move(self, e):
             
