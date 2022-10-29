@@ -4,7 +4,7 @@ from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
-from datetime import datetime
+import csv
 
 
 
@@ -40,6 +40,11 @@ class ControleurJeu(tk.Frame):
         self.minutes_string = ""
         self.seconds_string = ""
         self.milliseconds_string = ""
+
+
+
+        #variables score
+        self.listScore = []
         
         
         
@@ -64,39 +69,36 @@ class ControleurJeu(tk.Frame):
         self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
         self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
         self.modeleJeu.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
-        
+
+
+
+
+
+
+    #PARTIE POUR TIMER    
     def create_widgets(self):
         self.stopwatch_label = tk.Label(self, text='00:00:00', font=('Arial', 80))
         self.stopwatch_label.pack()
-        # self.start_button = tk.Button(self, text='start', height=5, width=7, font=('Arial', 20), command=self.start)
-        # self.start_button.pack(side=tk.LEFT)
-        # self.pause_button = tk.Button(self, text='pause', height=5, width=7, font=('Arial', 20), command=self.pause)
-        # self.pause_button.pack(side=tk.LEFT)
-        # self.reset_button = tk.Button(self, text='reset', height=5, width=7, font=('Arial', 20), command=self.reset)
-        # self.reset_button.pack(side=tk.LEFT)
-        # self.quit_button = tk.Button(self, text='quit', height=5, width=7, font=('Arial', 20), command=self.window.quit)
-        # self.quit_button.pack(side=tk.LEFT)
-        # self.window.title('Stopwatch (Class)')
 
-    def start1(self):
+    def startTimer(self):
         if not self.running:
                 self.stopwatch_label.after(10)
-                self.update()
+                self.updateTimer()
                 self.running = True
 
-    def pause(self):
+    def pauseTimer(self):
         if self.running:
             self.stopwatch_label.after_cancel(self.update_time)
             self.running = False
 
-    # def reset(self):
-    #     if self.running:
-    #         self.stopwatch_label.after_cancel(self.update_time)
-    #         self.running = False
-    #     self.minutes, self.seconds, self.milliseconds = 0, 0, 0
-    #     self.stopwatch_label.config(text='00:00:00')
+    def resetTimer(self):
+        if self.running:
+            self.stopwatch_label.after_cancel(self.update_time)
+            self.running = False
+        self.minutes, self.seconds, self.milliseconds = 0, 0, 0
+        self.stopwatch_label.config(text='00:00:00')
 
-    def update(self):
+    def updateTimer(self):
         self.milliseconds += 1
         if self.milliseconds == 60:
             self.seconds += 1
@@ -108,9 +110,27 @@ class ControleurJeu(tk.Frame):
         self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
         self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
         self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
-        self.update_time = self.stopwatch_label.after(10, self.update)
+        self.update_time = self.stopwatch_label.after(10, self.updateTimer)
+    #FIN PARTIE TIMER    
+        
+
+    #PARTIE CSV
+
+    #Ecriture du score dans fichier csv
+    def openCSV(self, score):
+        f = open('score.csv', 'a', newline='')
+        tup1 = ('bob', 19)
+        writer = csv.writer(f)
+        writer.writerow(tup1)
+        tup2 = ('joe', 44)
+        writer.writerow(tup2)
+        f.close()
+
+    
         
         
+
+
         
         
   
@@ -132,7 +152,7 @@ class ControleurJeu(tk.Frame):
             
             self.enMouvement = True
             if self.collision == False:
-                self.start1()
+                self.startTimer()
                         
     def release(self, e):
         '''
@@ -208,14 +228,17 @@ class ControleurJeu(tk.Frame):
                             break                 
                 
                 if collision:
-                    # print(True)
-                    self.collision = True
+
                     #mettre temps dans fichier csv
-                    print(self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string)
-                    self.pause()
+                    #print(self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string)
+                    self.pauseTimer()
+                    self.listScore = self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string
+                    #ecrire les infos dans le fichier csv QUAND LA PARTIE EST TERMINEE
+
+                    self.openCSV(self.listScore)
+                    collision = False
+
                     
-                # else:
-                    # print(False)
 
             self.it += 1
         
