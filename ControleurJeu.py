@@ -151,17 +151,17 @@ class ControleurJeu:
             BT = self.bordure.listeBordures[2].get_position().y - self.bordure.listeTaillesBordure[2][1]/2  #position bordure haut externe (border top)
             BB = self.bordure.listeBordures[3].get_position().y + self.bordure.listeTaillesBordure[3][1]/2  #position bordure bas externe (border bottom)
 
-            # La position d'origin du rectangle selon l'axe de x et de y
+            # La position d'origin du rectangle selon l'axe de x et de y (RB pour rectangle blue)
             RBY = self.rectangles.listeRectangles[i].get_position().y    #position Y milieu du rectangle blue 
             RBX = self.rectangles.listeRectangles[i].get_position().x    #position X milieu du rectangle blue
 
-            # La position de chaque côte du rectangle
+            # La position de chaque côte du rectangle (RB pour rectangle blue)
             RBL = RBX - self.rectangles.listeTaillesRectangles[i][0]/2    #position gauche du rectangle blue 
             RBR = RBX + self.rectangles.listeTaillesRectangles[i][0]/2    #position droite du rectangle blue
             RBT = RBY - self.rectangles.listeTaillesRectangles[i][1]/2    #position haut du rectangle blue
             RBB = RBY + self.rectangles.listeTaillesRectangles[i][1]/2    #position bas du rectangle blue
             
-            self.vitesse = 10 # La vitesse de la translation du rectangle
+            self.vitesse = 14 # La vitesse de la translation du rectangle
             
             # Les directions horizontales et verticales
             DirectionGauche = RBX - self.vitesse
@@ -299,5 +299,5 @@ class ControleurJeu:
         # Sinon reinisialize tout
         else:
             print("You Lost")
-            time.sleep(0.65)
+            time.sleep(0.75)
             self.initializeAll()
