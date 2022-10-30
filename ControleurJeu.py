@@ -6,15 +6,35 @@ from functools import partial
 import tkinter as tk
 import time
 from threading import Timer
+import csv
 
 import c31Geometry2 as c31
 
-class ControleurJeu:
+class ControleurJeu(tk.Frame):
     """
     Cette classe contient les fonctionnalités du jeu
     """
-    
-    def __init__(self, container):
+    def __init__(self, container, window=None):
+
+        #Variables timer
+        super().__init__(window)
+        self.window = window
+        self.update_time = ''
+        self.running = False
+        self.minutes = 0
+        self.seconds = 0
+        self.milliseconds = 0
+        self.pack()
+        self.create_widgets()
+        self.minutes_string = ""
+        self.seconds_string = ""
+        self.milliseconds_string = ""
+
+        #variables score
+        self.listScore = []
+        self.nbrTourBoucle = 0
+        self.username = ''
+
         """
         parametres container
         """
@@ -28,9 +48,65 @@ class ControleurJeu:
         self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
         self.carreRouge.carreRouge.canvas.bind("<Motion>", self.moveCR)
         self.carreRouge.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
+
+
+
+        #PARTIE POUR TIMER    
+    def create_widgets(self):
+        self.stopwatch_label = tk.Label(self, text='00:00:00', font=('Arial', 80))
+        self.stopwatch_label.pack()
+
+    def startTimer(self):
+        if not self.running:
+                self.stopwatch_label.after(10)
+                self.updateTimer()
+                self.running = True
+
+    def pauseTimer(self):
+        if self.running:
+            self.stopwatch_label.after_cancel(self.update_time)
+            self.running = False
+
+    def resetTimer(self):
+        if self.running:
+            self.stopwatch_label.after_cancel(self.update_time)
+            self.running = False
+        self.minutes, self.seconds, self.milliseconds = 0, 0, 0
+        self.stopwatch_label.config(text='00:00:00')
+
+    def updateTimer(self):
+        self.milliseconds += 1
+        if self.milliseconds == 60:
+            self.seconds += 1
+            self.milliseconds = 0
+        if self.seconds == 60:
+            self.minutes += 1
+            self.seconds = 0
+        self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
+        self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
+        self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
+        self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
+        self.update_time = self.stopwatch_label.after(10, self.updateTimer)
+    #FIN PARTIE TIMER    
+        
+    #PARTIE CSV
+
+    #Ecriture du score et username dans fichier csv
+    def openCSV(self, score, username):
+        f = open('score.csv', 'a', newline='')
+        writer = csv.writer(f)
+        writer.writerow([username, score])
+        f.close()
+
+    #Window pop up pour le username
+    def setUsername(self, x):
+        self.username = x + "\n"
         
 
     
+
+
+
     def initializeAll(self):
         self.enMouvement = False # boolean qui change selon les evenements click ou release du B1 de la souris, permet de savoir quand deplacer le carre rouge et quand le laisser statique 
         self.gameOver = False # boolean qui nous permet d'arreter le jeu lorsqu'il y a une collision
@@ -78,6 +154,7 @@ class ControleurJeu:
             self.enMouvement = True
             if self.premierClick:
                 self.premierClick = False
+                self.startTimer()
                 self.moveR()
                         
     def release(self, e):
@@ -299,5 +376,10 @@ class ControleurJeu:
         # Sinon reinisialize tout
         else:
             print("You Lost")
+            self.pauseTimer()
+            self.listScore.append(self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
             time.sleep(0.75)
+            self.resetTimer()
             self.initializeAll()
+            print(self.listScore)
+            

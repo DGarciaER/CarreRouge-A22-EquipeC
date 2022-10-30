@@ -1,17 +1,21 @@
 from sqlite3 import Time
+from tkinter import simpledialog
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
 # import c31Geometry2 as c31
 
+
 if __name__ == "__main__":
+
+    
 
     # créer une fenetre tk avec un titre, un background et des dimensions
     couleurTheme = "#FFE299"
     root = tk.Tk()
     root.title("Carré Rouge")
     root.config(background= couleurTheme)
-    root.geometry("550x650")
+    root.geometry("550x800")
 
     # créer un containter et le centrer dans la fenetre tk
     mainContainer = tk.Frame(root, background= couleurTheme)
@@ -29,6 +33,15 @@ if __name__ == "__main__":
     # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
     
+    def askUsername():
+        jeu.setUsername(simpledialog.askstring('Username', 'Entrez votre prenom: '))
+        jeu.openCSV(jeu.listScore, jeu.username)
+        jeu.listScore.clear()
+
+    def askUsernameQuit():
+        jeu.setUsername(simpledialog.askstring('Username', 'Entrez votre prenom: '))
+        jeu.openCSV(jeu.listScore, jeu.username)
+        root.quit()
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background= couleurTheme)
@@ -37,7 +50,7 @@ if __name__ == "__main__":
     couleutButtons = "#C6D4FF"
 
     # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
-    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background= couleutButtons)
+    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background= couleutButtons, command=askUsername)
     buttonNouvSession.grid(column=1, row=1, padx=15)
 
     # créer un button qui affiche le menu score un nouveau jeu et le mettre dans un grid en lui donnant du padding
@@ -45,7 +58,7 @@ if __name__ == "__main__":
     buttonMenuScores.grid(column=2, row=1, padx=15, pady=15)
 
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
-    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background= couleutButtons)
+    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background= couleutButtons, command=askUsernameQuit)
     buttonQuitter.grid(column=3, row=1, padx=15)
     
     # boocler la fenetre tk
