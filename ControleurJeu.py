@@ -1,100 +1,303 @@
 from cgi import test
+from operator import truediv
 from VueJeu import VueJeu
-from ModeleJeu import ModeleJeu
+from ModeleJeu import Bordure, CarreRouge, Rectangles
 from functools import partial
 import tkinter as tk
+import time
+from threading import Timer
 
 import c31Geometry2 as c31
 
 class ControleurJeu:
+    """
+    Cette classe contient les fonctionnalités du jeu
+    """
     
     def __init__(self, container):
+        """
+        parametres container
+        """
         self.vueJeu = VueJeu()
-        self.modeleJeu = ModeleJeu(container)
-        self.modeleJeu.afficher_carreRouge()
-        self.modeleJeu.afficher_rectangleBleuSupDroit()
-        self.modeleJeu.afficher_rectangleBleuGauche()
-        self.modeleJeu.afficher_rectangleBleuInfDroit()
-        self.modeleJeu.afficher_rectangleBleuInfGauche()
-        self.modeleJeu.afficher_leftBorder()
-        self.modeleJeu.afficher_rightBorder()
-        self.modeleJeu.afficher_topBorder()
-        self.modeleJeu.afficher_bottomBorder()
-        self.enMouvement = False
-        self.gameOver = False
-        self.it = 0
+        self.carreRouge = CarreRouge(container)
+        self.rectangles = Rectangles(container)
+        self.bordure = Bordure(container)
         
-        self.modeleJeu.carreRouge.canvas.bind("<Button-1>", self.click)
-        self.modeleJeu.carreRouge.canvas.bind("<Motion>", self.move)
-        self.modeleJeu.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
+        self.initializeAll()
+
+        self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
+        self.carreRouge.carreRouge.canvas.bind("<Motion>", self.moveCR)
+        self.carreRouge.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
         
+
+    
+    def initializeAll(self):
+        self.enMouvement = False # boolean qui change selon les evenements click ou release du B1 de la souris, permet de savoir quand deplacer le carre rouge et quand le laisser statique 
+        self.gameOver = False # boolean qui nous permet d'arreter le jeu lorsqu'il y a une collision
+        self.premierMouv = True
+        self.premierClick = True
+        self.iteration = 0 # valeur qui permet de ralentir l'affichage du carre rouge pour assurer une belle presentation
+        
+        self.DirectionActuelle = [c31.Vecteur(0, 0), c31.Vecteur(0, 0), c31.Vecteur(0, 0), c31.Vecteur(0, 0) ]   
+        self.boolDroiteHaut = [False, False, False, False]
+        self.boolDroiteBas = [False, False, False, False]
+        self.boolGaucheHaut = [False, False, False, False]
+        self.boolGaucheBas = [False, False, False, False]
+
+        self.carreRouge.carreRouge.translateTo(c31.Vecteur(225,225))
+        self.carreRouge.carreRouge.set_position(c31.Vecteur(225,225))
+        self.rectangles.listeRectangles[0].translateTo(c31.Vecteur(100, 100))
+        self.rectangles.listeRectangles[0].set_position(c31.Vecteur(100, 100))
+        self.rectangles.listeRectangles[1].translateTo(c31.Vecteur(300, 85))
+        self.rectangles.listeRectangles[1].set_position(c31.Vecteur(300, 85))
+        self.rectangles.listeRectangles[2].translateTo(c31.Vecteur(85, 350))
+        self.rectangles.listeRectangles[2].set_position(c31.Vecteur(85, 350))
+        self.rectangles.listeRectangles[3].translateTo(c31.Vecteur(355, 340))
+        self.rectangles.listeRectangles[3].set_position(c31.Vecteur(355, 340))
+
+        self.vueJeu.afficherBordure(self.bordure)
+        self.vueJeu.afficherRectanglesBlues(self.rectangles)
+        self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
+
 
     # cette methode commence le jeu
     def click(self, e):
+        """
+        Cette méthode détecte un click gauche de la souris sur le carré rouge et change la valeur de vérité de la variable enMouvement en conséquence.
+        La valeur de vérité de la variable enMouvement est une condition pour permettre le mouvement du carré rouge.
+        parametre:
+        event
+        """
 
-        CRL = self.modeleJeu.carreRouge.get_position().x - 20    #position gauche du carré rouge 
-        CRR = self.modeleJeu.carreRouge.get_position().x + 20    #position droite du carré rouge
-        CRT = self.modeleJeu.carreRouge.get_position().y - 20    #position haut du carré rouge
-        CRB = self.modeleJeu.carreRouge.get_position().y + 20    #position bas du carré rouge
-
+        CRL = self.carreRouge.carreRouge.get_position().x - 20    #position gauche du carré rouge 
+        CRR = self.carreRouge.carreRouge.get_position().x + 20    #position droite du carré rouge
+        CRT = self.carreRouge.carreRouge.get_position().y - 20    #position haut du carré rouge
+        CRB = self.carreRouge.carreRouge.get_position().y + 20    #position bas du carré rouge
+        
         if  e.x > CRL and e.x < CRR and e.y > CRT and e.y < CRB:
             self.enMouvement = True
+            if self.premierClick:
+                self.premierClick = False
+                self.moveR()
                         
     def release(self, e):
+        """
+        Cette méthode détecte le release du boutton gauche de la souris.
+        parametre:
+        event
+        """
         self.enMouvement = False
         
-    def move(self, e):
+    def moveCR(self, e): # move Carré Rouge
+        """
+        Cette méthode permet de bouger le carré rouge dans le canvas.
+        parametre:
+        event
+        """  
             
-        if self.enMouvement == True:
-            if self.it % 3 == 0:    
-                    
-                self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
-                self.modeleJeu.carreRouge.set_position(c31.Vecteur(e.x,e.y))
-                self.modeleJeu.afficher_carreRouge()
-
-                collision = False
+        if self.enMouvement == True and not self.gameOver:
+            if self.iteration % 3 == 0: # relentir d'affichage 
+                self.iteration = 0
+                self.carreRouge.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
+                self.carreRouge.carreRouge.set_position(c31.Vecteur(e.x,e.y))
+                self.vueJeu.afficherCarreRouge(self.carreRouge.carreRouge)
                 
-                for i in range(4):
+            self.iteration += 1
+            
+    def collision(self):
+        
+        BL = self.bordure.listeBordures[0].get_position().x + self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche interne
+        BR = self.bordure.listeBordures[1].get_position().x - self.bordure.listeTaillesBordure[1][0]/2  #position bordure droite interne
+        BT = self.bordure.listeBordures[2].get_position().y + self.bordure.listeTaillesBordure[2][1]/2  #position bordure haut interne
+        BB = self.bordure.listeBordures[3].get_position().y - self.bordure.listeTaillesBordure[3][1]/2  #position bordure bas interne
+        
+        CRY = self.carreRouge.carreRouge.get_position().y    #position Y milieu du carré rouge 
+        CRX = self.carreRouge.carreRouge.get_position().x    #position X milieu du carré rouge 
+        CRL = CRX - 20    #position gauche du carré rouge 
+        CRR = CRX + 20    #position droite du carré rouge
+        CRT = CRY - 20    #position haut du carré rouge
+        CRB = CRY + 20    #position bas du carré rouge
+        
+        # detecte les collisions du carre rouge avec la bordure interne
+        if  CRT <= BT or CRB >= BB or CRR >= BR or CRL <= BL: 
+            self.gameOver = True
+            print("carre rouge est sorti de l'aire de jeu")  # temp pour debug
+            
+        for i in range(4):
+            
+            RL = self.rectangles.listeRectangles[i].get_position().x - self.rectangles.listeTaillesRectangles[i][0]/2  #position gauche du pion
+            RR = self.rectangles.listeRectangles[i].get_position().x + self.rectangles.listeTaillesRectangles[i][0]/2  #position droite du pion
+            RT = self.rectangles.listeRectangles[i].get_position().y - self.rectangles.listeTaillesRectangles[i][1]/2  #position haut du pion
+            RB = self.rectangles.listeRectangles[i].get_position().y + self.rectangles.listeTaillesRectangles[i][1]/2  #position bas du pion
 
-                    CRY = self.modeleJeu.carreRouge.get_position().y    #position Y milieu du carré rouge 
-                    CRX = self.modeleJeu.carreRouge.get_position().x    #position X milieu du carré rouge 
-                    CRL = CRX - 20    #position gauche du carré rouge 
-                    CRR = CRX + 20    #position droite du carré rouge
-                    CRT = CRY - 20    #position haut du carré rouge
-                    CRB = CRY + 20    #position bas du carré rouge
-                    PL = self.modeleJeu.listeRectangles[i].get_position().x - self.modeleJeu.listT[i][0]/2  #position gauche du pion
-                    PR = self.modeleJeu.listeRectangles[i].get_position().x + self.modeleJeu.listT[i][0]/2  #position droite du pion
-                    PT = self.modeleJeu.listeRectangles[i].get_position().y - self.modeleJeu.listT[i][1]/2  #position haut du pion
-                    PB = self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2  #position bas du pion
+            # la logique des collisions avec RB
+            if  CRT <= RB and CRT >= RT or CRY <= RB and CRY >= RT or CRB >= RT and CRB <= RB:
+                if  CRR >= RL and CRR <= RR or CRL <= RR and CRL >= RL or CRX <= RR and CRX >= RL:
+                    self.gameOver = True
+                    break
 
-                    # la logique des collisions
-                    if  CRT <= PB and CRT >= PT or CRY <= PB and CRY >= PT:
-                        if  CRR >= PL and CRR <= PR:
-                            collision = True
-                            break
-                        elif CRL <= PR and CRL >= PL:
-                            collision = True
-                            break
-                        elif CRX <= PR and CRX >= PL:
-                            collision = True
-                            break
 
-                    elif  CRB >= PT and CRB <= PB or CRY>= PT and CRY <= PB:
-                        if  CRR >= PL and CRR <= PR:
-                            collision = True
-                            break
-                        elif CRL <= PR and CRL >= PL:
-                            collision = True
-                            break
-                        elif CRX <= PR and CRX >= PL:
-                            collision = True
-                            break                 
+    """ Cette méthode permet de bouger les pions (rectangle bleu) dans le canvas.
+    parametre:
+    event
+    """       
+    def moveR(self):
+
+        for i in range(4):
+
+            # Les 4 positions externes de la bordure qu'on va utiliser pour vérifier si les rectangles les touchent
+            BL = self.bordure.listeBordures[0].get_position().x - self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche externe (border left)
+            BR = self.bordure.listeBordures[1].get_position().x + self.bordure.listeTaillesBordure[1][0]/2  #position bordure droite externe (border right)
+            BT = self.bordure.listeBordures[2].get_position().y - self.bordure.listeTaillesBordure[2][1]/2  #position bordure haut externe (border top)
+            BB = self.bordure.listeBordures[3].get_position().y + self.bordure.listeTaillesBordure[3][1]/2  #position bordure bas externe (border bottom)
+
+            # La position d'origin du rectangle selon l'axe de x et de y
+            RBY = self.rectangles.listeRectangles[i].get_position().y    #position Y milieu du rectangle blue 
+            RBX = self.rectangles.listeRectangles[i].get_position().x    #position X milieu du rectangle blue
+
+            # La position de chaque côte du rectangle
+            RBL = RBX - self.rectangles.listeTaillesRectangles[i][0]/2    #position gauche du rectangle blue 
+            RBR = RBX + self.rectangles.listeTaillesRectangles[i][0]/2    #position droite du rectangle blue
+            RBT = RBY - self.rectangles.listeTaillesRectangles[i][1]/2    #position haut du rectangle blue
+            RBB = RBY + self.rectangles.listeTaillesRectangles[i][1]/2    #position bas du rectangle blue
+            
+            self.vitesse = 10 # La vitesse de la translation du rectangle
+            
+            # Les directions horizontales et verticales
+            DirectionGauche = RBX - self.vitesse
+            DirectionHaut = RBY - self.vitesse
+            DirectionDroite = RBX + self.vitesse
+            DirectionBas = RBY + self.vitesse
+
+            # Les directions diagonales (celles qu'on va utiliser)
+            DirectionDroiteHaut = c31.Vecteur(DirectionDroite, DirectionHaut)
+            DirectionDroiteBas = c31.Vecteur(DirectionDroite, DirectionBas)
+            DirectionGaucheHaut = c31.Vecteur(DirectionGauche, DirectionHaut)
+            DirectionGaucheBas = c31.Vecteur(DirectionGauche, DirectionBas)
+
+            # Si c'est le premier tour de mouvement donne le rectange sa direction actuelle pour commencer la translation
+            if self.premierMouv:
+                if i == 0:
+                    self.DirectionActuelle[i] = DirectionDroiteBas
+                    self.boolDroiteBas[i] = True
+                elif i == 1:
+                    self.DirectionActuelle[i] = DirectionGaucheBas
+                    self.boolGaucheBas[i] = True
+                elif i == 2:
+                    self.DirectionActuelle[i] = DirectionDroiteHaut
+                    self.boolDroiteHaut[i] = True
+                elif i == 3:
+                    self.DirectionActuelle[i] = DirectionGaucheHaut
+                    self.boolGaucheHaut[i] = True
+
+            # Sinon laisse le continuer avec sa direction actuelle
+            else:
+                if self.boolDroiteBas[i]:
+                    self.DirectionActuelle[i] = DirectionDroiteBas
+
+                elif self.boolDroiteHaut[i]:
+                    self.DirectionActuelle[i] = DirectionDroiteHaut
+
+                elif self.boolGaucheBas[i]:
+                    self.DirectionActuelle[i] = DirectionGaucheBas
+
+                elif self.boolGaucheHaut[i]:
+                    self.DirectionActuelle[i] = DirectionGaucheHaut
+
+
+            # Si le côte bas du rectangle touche l'extremité du côté bas de la bordure 
+            if RBB >= BB:
+
+                # NOTE: Les seules directions qu'on vérifie ici sont les directions: DroiteBas et GaucheBas, 
+                # puisque ce sont les seules directions posibles ou le rectangle est en translation vers le bas
+
+                #Si la direction actuelle est DroiteBas alors on le change pour DroiteHaut (sens contraire)
+                if self.boolDroiteBas[i]:  
+                    self.DirectionActuelle[i] = DirectionDroiteHaut
+                    self.boolDroiteBas[i] = False
+                    self.boolDroiteHaut[i] = True
+
+                #Si la direction actuelle est GaucheBas alors on le change pour GaucheHaut (sens contraire)
+                else: #self.boolGaucheBas 
+                    self.DirectionActuelle[i] = DirectionGaucheHaut
+                    self.boolGaucheBas[i] = False
+                    self.boolGaucheHaut[i] = True
+
+
+            # Si le côte droit du rectangle touche l'extremité du côté droit de la bordure 
+            if RBR >= BR:
+
+                # NOTE: Les seules directions qu'on vérifie ici sont les directions: DroiteBas et DroiteHaut, 
+                # puisque ce sont les seules directions posibles ou le rectangle est en translation vers le droit
+
+                #Si la direction actuelle est DroiteBas alors on le change pour GaucheBas (sens contraire)
+                if self.boolDroiteBas[i]:
+                    self.DirectionActuelle[i] = DirectionGaucheBas
+                    self.boolDroiteBas[i] = False
+                    self.boolGaucheBas[i] = True
                 
-                if collision:
-                    print(True)
-                else:
-                    print(False)
+                #Si la direction actuelle est DroiteHaut alors on le change pour GaucheHaut (sens contraire)
+                else: #self.boolDroiteHaut
+                    self.DirectionActuelle[i] = DirectionGaucheHaut
+                    self.boolDroiteHaut[i] = False
+                    self.boolGaucheHaut[i] = True
 
-            self.it += 1
 
-               
+            # Si le côte gauche du rectangle touche l'extremité du côté gauche de la bordure 
+            if RBL <= BL:
+
+                # NOTE: Les seules directions qu'on vérifie ici sont les directions: GaucheBas et GaucheHaut, 
+                # puisque ce sont les seules directions posibles ou le rectangle est en translation vers le gauche
+
+                #Si la direction actuelle est GaucheBas alors on le change pour DroiteBas (sens contraire)
+                if self.boolGaucheBas[i]:
+                    self.DirectionActuelle[i] = DirectionDroiteBas
+                    self.boolGaucheBas[i] = False
+                    self.boolDroiteBas[i] = True
+
+                #Si la direction actuelle est GaucheHaut alors on le change pour DroiteHaut (sens contraire)
+                else: #self.boolGaucheHaut
+                    self.DirectionActuelle[i] = DirectionDroiteHaut
+                    self.boolGaucheHaut[i] = False
+                    self.boolDroiteHaut[i] = True
+
+
+            # Si le côte haut du rectangle touche l'extremité du côté haut de la bordure 
+            if  RBT <= BT:
+
+                # NOTE: Les seules directions qu'on vérifie ici sont les directions: DroiteHaut et GaucheHaut, 
+                # puisque ce sont les seules directions posibles ou le rectangle est en translation vers le haut
+
+                #Si la direction actuelle est DroiteHaut alors on le change pour DroiteBas (sens contraire)
+                if self.boolDroiteHaut[i]:
+                    self.DirectionActuelle[i] = DirectionDroiteBas
+                    self.boolDroiteHaut[i] = False
+                    self.boolDroiteBas[i] = True
+
+                #Si la direction actuelle est GaucheHaut alors on le change pour DroiteHaut (sens contraire)
+                else: #self.boolGaucheHaut
+                    self.DirectionActuelle[i] = DirectionGaucheBas
+                    self.boolGaucheHaut[i] = False
+                    self.boolGaucheBas[i] = True
+
+            # Mettre en translation le rectangle et sauvegarder sa nouvelle position
+            self.rectangles.listeRectangles[i].translateTo(self.DirectionActuelle[i])
+            self.rectangles.listeRectangles[i].set_position(self.DirectionActuelle[i])
+
+        # Afficher les 4 rectangles à la fin de la boucle
+        self.collision()
+        self.vueJeu.afficherRectanglesBlues(self.rectangles)
+
+
+        self.premierMouv = False # Terminer le premier mouvement
+
+        # Tant que le jeu n'est pas terminer (pas de collision) rappelle la fonction recursivement à chaque 30 miliseconds
+        if not self.gameOver:
+            wait = Timer(0.03,self.moveR)
+            wait.start()
+        
+        # Sinon reinisialize tout
+        else:
+            print("You Lost")
+            time.sleep(0.65)
+            self.initializeAll()

@@ -1,6 +1,6 @@
+from sqlite3 import Time
 from ControleurJeu import ControleurJeu
 from functools import partial
-import time
 import tkinter as tk
 # import c31Geometry2 as c31
 
@@ -27,6 +27,7 @@ if __name__ == "__main__":
     
     # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
+    
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background="grey90")
