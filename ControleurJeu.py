@@ -2,12 +2,12 @@ from cgi import test
 from itertools import count
 from logging import root
 from tkinter import simpledialog
+from typing import Container
 from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
 import tkinter as tk
 import csv
-
 
 
 import c31Geometry2 as c31
@@ -134,10 +134,10 @@ class ControleurJeu(tk.Frame):
         f.close()
 
     #Window pop up pour le username
-    def askUsername(self):
-        self.username = simpledialog.askstring("Username", "Entrez votre nom:")
-        
-        
+    def setUsername(self, x):
+        self.username = x
+    
+       
     
         
         
@@ -258,8 +258,8 @@ class ControleurJeu(tk.Frame):
                     self.listScore = self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string
                     #ecrire les infos dans le fichier csv QUAND LA PARTIE EST TERMINEE
                     
-                    self.username = self.askUsername()
-                    self.openCSV(self.listScore, self.username)
+                    
+                    
                     
 
                     

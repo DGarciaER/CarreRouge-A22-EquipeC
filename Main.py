@@ -1,13 +1,19 @@
+from cProfile import label
+from curses import newwin
+from tkinter import simpledialog
 from ControleurJeu import ControleurJeu
 from functools import partial
 import time
 import tkinter as tk
+from tkinter import *
+
 # import c31Geometry2 as c31
 
 if __name__ == "__main__":
     '''
     Le main du projet (...)
     '''
+
     # créer une fenetre tk avec un titre, un background et des dimensions
     root = tk.Tk()
     root.title("Carré Rouge")
@@ -46,8 +52,25 @@ if __name__ == "__main__":
     buttonMenuScores = tk.Button(buttonsContainer, text="Menu Score", background="pink")
     buttonMenuScores.grid(column=2, row=1, padx=15, pady=15)
 
+    def create():
+        newWindow = tk.Toplevel(root, background='pink')
+        newWindow.geometry("300x300")
+        labelExample = tk.Label(newWindow, text = "Prenom:")
+        labelExample.pack(side=LEFT)
+        nom = Entry(newWindow, bd=5)
+        nom.pack(side=RIGHT)
+        #labelScore = tk.Label(newWindow, text = jeu.temp)
+        #labelScore.pack(side=BOTTOM)
+        buttonOK = tk.Button(newWindow, text="OK", command=root.quit)
+        buttonOK.pack()
+
+    def askUsername():
+        jeu.setUsername(simpledialog.askstring("Username", "Entrez votre nom:"))
+        jeu.openCSV(jeu.listScore, jeu.username)
+        root.quit()
+
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
-    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink", command=jeu.askUsername)
+    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink", command=askUsername)
     buttonQuitter.grid(column=3, row=1, padx=15)
    
     
