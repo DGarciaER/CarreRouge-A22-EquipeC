@@ -24,7 +24,7 @@ class Application(tk.Frame):
         self.reset_button.pack(side=tk.LEFT)
         self.quit_button = tk.Button(self, text='quit', height=5, width=7, font=('Arial', 20), command=self.window.quit)
         self.quit_button.pack(side=tk.LEFT)
-        self.window.title('Stopwatch (Class)')
+        #self.window.title('Stopwatch (Class)')
 
     def start(self):
         if not self.running:

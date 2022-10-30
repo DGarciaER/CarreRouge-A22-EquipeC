@@ -47,7 +47,7 @@ if __name__ == "__main__":
     buttonMenuScores.grid(column=2, row=1, padx=15, pady=15)
 
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
-    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink")
+    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background="pink", command=jeu.askUsername)
     buttonQuitter.grid(column=3, row=1, padx=15)
    
     
