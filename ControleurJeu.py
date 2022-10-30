@@ -1,5 +1,7 @@
 from cgi import test
 from itertools import count
+from logging import root
+from tkinter import simpledialog
 from VueJeu import VueJeu
 from ModeleJeu import ModeleJeu
 from functools import partial
@@ -28,6 +30,8 @@ class ControleurJeu(tk.Frame):
         Paramètres:
             container:
         '''
+
+        #Variables timer
         super().__init__(window)
         self.window = window
         self.update_time = ''
@@ -44,7 +48,9 @@ class ControleurJeu(tk.Frame):
 
 
         #variables score
-        self.listScore = []
+        self.listScore = ""
+        self.nbrTourBoucle = 0
+        self.username = ""
         
         
         
@@ -114,18 +120,24 @@ class ControleurJeu(tk.Frame):
     #FIN PARTIE TIMER    
         
 
+
+
+
+
     #PARTIE CSV
 
-    #Ecriture du score dans fichier csv
-    def openCSV(self, score):
+    #Ecriture du score et username dans fichier csv
+    def openCSV(self, score, username):
         f = open('score.csv', 'a', newline='')
-        tup1 = ('bob', 19)
         writer = csv.writer(f)
-        writer.writerow(tup1)
-        tup2 = ('joe', 44)
-        writer.writerow(tup2)
+        writer.writerow([score, username])
         f.close()
 
+    #Window pop up pour le username
+    def askUsername(self):
+        self.username = simpledialog.askstring("Username", "Entrez votre nom:")
+        
+        
     
         
         
@@ -152,7 +164,8 @@ class ControleurJeu(tk.Frame):
             
             self.enMouvement = True
             if self.collision == False:
-                self.startTimer()
+                if not self.gameOver:
+                    self.startTimer()
                         
     def release(self, e):
         '''
@@ -183,6 +196,7 @@ class ControleurJeu(tk.Frame):
         '''        
         
         if self.enMouvement == True:
+            
             if self.it % 3 == 0:    
                     
                 self.modeleJeu.carreRouge.translateTo(c31.Vecteur(e.x, e.y))
@@ -205,42 +219,52 @@ class ControleurJeu(tk.Frame):
                     PB = self.modeleJeu.listeRectangles[i].get_position().y + self.modeleJeu.listT[i][1]/2  #position bas du pion
 
                     # la logique des collisions
-                    if  CRT <= PB and CRT >= PT or CRY <= PB and CRY >= PT:
-                        if  CRR >= PL and CRR <= PR:
-                            collision = True
-                            break
-                        elif CRL <= PR and CRL >= PL:
-                            collision = True
-                            break
-                        elif CRX <= PR and CRX >= PL:
-                            collision = True
-                            break
+                    if self.nbrTourBoucle < 1:
+                        if  CRT <= PB and CRT >= PT or CRY <= PB and CRY >= PT:
+                            if  CRR >= PL and CRR <= PR:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
+                            elif CRL <= PR and CRL >= PL:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
+                            elif CRX <= PR and CRX >= PL:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
 
-                    elif  CRB >= PT and CRB <= PB or CRY>= PT and CRY <= PB:
-                        if  CRR >= PL and CRR <= PR:
-                            collision = True
-                            break
-                        elif CRL <= PR and CRL >= PL:
-                            collision = True
-                            break
-                        elif CRX <= PR and CRX >= PL:
-                            collision = True
-                            break                 
+                        elif  CRB >= PT and CRB <= PB or CRY>= PT and CRY <= PB:
+                            if  CRR >= PL and CRR <= PR:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
+                            elif CRL <= PR and CRL >= PL:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
+                            elif CRX <= PR and CRX >= PL:
+                                collision = True
+                                self.nbrTourBoucle += 1
+                                break
+                
                 
                 if collision:
+                    self.gameOver = True
 
                     #mettre temps dans fichier csv
                     #print(self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string)
                     self.pauseTimer()
                     self.listScore = self.minutes_string + ":" + self.seconds_string + ":" + self.milliseconds_string
                     #ecrire les infos dans le fichier csv QUAND LA PARTIE EST TERMINEE
-
-                    self.openCSV(self.listScore)
-                    collision = False
+                    
+                    self.username = self.askUsername()
+                    self.openCSV(self.listScore, self.username)
+                    
 
                     
 
             self.it += 1
         
 
-  
+   
