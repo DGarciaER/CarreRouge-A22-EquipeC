@@ -15,31 +15,28 @@ class ControleurJeu(tk.Frame):
     def __init__(self, container, window=None):
 
         
-
         #Variables timer
         super().__init__(window)
         self.window = window
         self.update_time = ''
         self.running = False #Pour controller l'etat du timer (en marche ou non)
+        
         #On initialise les variables de temps a 0
         self.minutes = 0
         self.seconds = 0
         self.milliseconds = 0
-        
-        self.pack()
-        # self.create_widgets()
+
+        #On initialise les variables string a des chaines vides. Pour l'affichage et sauvegarder les scores (temps)
         self.minutes_string = ""
         self.seconds_string = ""
         self.milliseconds_string = ""
 
-        #variables score
+        #variables score/csv
         self.listScore = []
         self.nbrTourBoucle = 0
         self.username = ''
 
-        """
-        parametres container
-        """
+        #Parametres pour les containers
         self.vueJeu = VueJeu()
         self.carreRouge = CarreRouge(container)
         self.rectangles = Rectangles(container)
