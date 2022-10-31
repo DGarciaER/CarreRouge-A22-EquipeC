@@ -9,8 +9,6 @@ import csv
 
 if __name__ == "__main__":
 
-    scores = []
-
     # créer une fenetre tk avec un titre, un background et des dimensions
     couleurTheme = "#FFE299"
     root = tk.Tk()
@@ -35,22 +33,28 @@ if __name__ == "__main__":
     jeu = ControleurJeu(aireDeJeu)
     
     def askUsername():
-        jeu.setUsername(simpledialog.askstring("'Ok' = Enregistrer    'Cancel' = Pas Enregistrer", "                                                  Entrer votre nom                                                  "))
+        jeu.setUsername(simpledialog.askstring("Save", "Entrer votre nom pour enregistrer"))
         if jeu.username == None:
             pass
+        elif jeu.username == "\n":
+            jeu.listScore = []
         else:
-            jeu.openCSV(jeu.listScore, jeu.username)
-            jeu.listScore.clear()
+            if len(jeu.listScore) != 0:
+                jeu.openCSV(jeu.listScore, jeu.username)
 
     def askUsernameQuit():
-        jeu.setUsername(simpledialog.askstring("'Ok' = Enregistrer et Quitter   'Cancel' = Pas Enregistrer et Quitter", "                                                                    Entrer votre nom                                                                    "))
+        jeu.setUsername(simpledialog.askstring("Save", "Entrer votre nom pour enregistrer"))
         if jeu.username == None:
+            pass
+        elif jeu.username == "\n":
             root.quit()
         else:
-            jeu.openCSV(jeu.listScore, jeu.username)
-            root.quit()
+            if len(jeu.listScore) != 0:
+                jeu.openCSV(jeu.listScore, jeu.username)
+                root.quit()
 
     def AfficherScores():
+        scores = []
         with open("score.csv",'r') as r:
             obj = csv.reader(r, delimiter="\n")
             for i in obj:
@@ -65,6 +69,8 @@ if __name__ == "__main__":
             print(i[0][0])
             for j in i[0][1]:
                 print('\t' + j)
+                
+        scores = []
 
         
     jeu.create_widgets(mainContainer)
@@ -74,18 +80,18 @@ if __name__ == "__main__":
     buttonsContainer = tk.Canvas(mainContainer, background= couleurTheme, highlightthickness=0)
     buttonsContainer.grid(column=1, row=3, padx=10) # pour centrer et donner un padding
 
-    couleutButtons = "#C6D4FF"
+    couleutButtons = "#EE95A6"
 
     # créer un button qui commence une nouvelle session et le mettre dans un grid en lui donnant du padding
-    buttonNouvSession = tk.Button(buttonsContainer, text="Nouvelle Session", background= couleutButtons, command=askUsername)
+    buttonNouvSession = tk.Button(buttonsContainer, text="  Nouvelle Session  ", background= couleutButtons, command=askUsername)
     buttonNouvSession.grid(column=1, row=1, padx=15)
 
     # créer un button qui affiche le menu score un nouveau jeu et le mettre dans un grid en lui donnant du padding
-    buttonMenuScores = tk.Button(buttonsContainer, text="Menu Score", background= couleutButtons, command=AfficherScores)
+    buttonMenuScores = tk.Button(buttonsContainer, text="  Menu Score  ", background= couleutButtons, command=AfficherScores)
     buttonMenuScores.grid(column=2, row=1, padx=15, pady=15)
 
     # créer un button quitte du programme et le mettre dans un grid en lui donnant du padding
-    buttonQuitter = tk.Button(buttonsContainer, text="Quitter", background= couleutButtons, command=askUsernameQuit)
+    buttonQuitter = tk.Button(buttonsContainer, text="  Quitter  ", background= couleutButtons, command=askUsernameQuit)
     buttonQuitter.grid(column=3, row=1, padx=15)
     
     # boocler la fenetre tk

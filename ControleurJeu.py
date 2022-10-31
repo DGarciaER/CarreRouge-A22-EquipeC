@@ -106,10 +106,6 @@ class ControleurJeu(tk.Frame):
             self.username = x + "\n"
         else:
             self.username = x
-        
-
-    
-
 
 
     def initializeAll(self):
