@@ -11,19 +11,21 @@ import csv
 import c31Geometry2 as c31
 
 class ControleurJeu(tk.Frame):
-    """
-    Cette classe contient les fonctionnalités du jeu
-    """
+
     def __init__(self, container, window=None):
+
+        
 
         #Variables timer
         super().__init__(window)
         self.window = window
         self.update_time = ''
-        self.running = False
+        self.running = False #Pour controller l'etat du timer (en marche ou non)
+        #On initialise les variables de temps a 0
         self.minutes = 0
         self.seconds = 0
         self.milliseconds = 0
+        
         self.pack()
         # self.create_widgets()
         self.minutes_string = ""
@@ -53,10 +55,14 @@ class ControleurJeu(tk.Frame):
 
         #PARTIE POUR TIMER    
     def create_widgets(self, container):
+
         self.stopwatch_label = tk.Label(container, text='00:00:00', font=('Arial', 20), background= "#FFE299")
         self.stopwatch_label.grid(column=1, row=2, padx=10)
 
     def startTimer(self):
+        """
+
+        """
         if not self.running:
                 self.stopwatch_label.after(10)
                 self.updateTimer()
