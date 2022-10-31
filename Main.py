@@ -43,9 +43,9 @@ if __name__ == "__main__":
             jeu.listScore.clear()
 
     def askUsernameQuit():
-        jeu.setUsername(simpledialog.askstring("'Ok' = Enregistrer    'Cancel' = Pas Enregistrer", "                                                  Entrer votre nom                                                  "))
+        jeu.setUsername(simpledialog.askstring("'Ok' = Enregistrer et Quitter   'Cancel' = Pas Enregistrer et Quitter", "                                                                    Entrer votre nom                                                                    "))
         if jeu.username == None:
-            pass
+            root.quit()
         else:
             jeu.openCSV(jeu.listScore, jeu.username)
             root.quit()
