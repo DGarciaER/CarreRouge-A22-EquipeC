@@ -25,7 +25,7 @@ class ControleurJeu(tk.Frame):
         self.seconds = 0
         self.milliseconds = 0
         self.pack()
-        self.create_widgets()
+        # self.create_widgets()
         self.minutes_string = ""
         self.seconds_string = ""
         self.milliseconds_string = ""
@@ -52,9 +52,9 @@ class ControleurJeu(tk.Frame):
 
 
         #PARTIE POUR TIMER    
-    def create_widgets(self):
-        self.stopwatch_label = tk.Label(self, text='00:00:00', font=('Arial', 80))
-        self.stopwatch_label.pack()
+    def create_widgets(self, container):
+        self.stopwatch_label = tk.Label(container, text='00:00:00', font=('Arial', 20), background= "#FFE299")
+        self.stopwatch_label.grid(column=1, row=2, padx=10)
 
     def startTimer(self):
         if not self.running:
@@ -100,7 +100,10 @@ class ControleurJeu(tk.Frame):
 
     #Window pop up pour le username
     def setUsername(self, x):
-        self.username = x + "\n"
+        if not x == None:
+            self.username = x + "\n"
+        else:
+            self.username = x
         
 
     
@@ -154,6 +157,7 @@ class ControleurJeu(tk.Frame):
             self.enMouvement = True
             if self.premierClick:
                 self.premierClick = False
+                self.resetTimer()
                 self.startTimer()
                 self.moveR()
                         
@@ -379,7 +383,6 @@ class ControleurJeu(tk.Frame):
             self.pauseTimer()
             self.listScore.append(self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
             time.sleep(0.75)
-            self.resetTimer()
             self.initializeAll()
             print(self.listScore)
             
