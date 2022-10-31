@@ -64,35 +64,34 @@ class ControleurJeu(tk.Frame):
 
         """
         if not self.running:
+                self.running = True
                 self.stopwatch_label.after(10)
                 self.updateTimer()
-                self.running = True
 
     def pauseTimer(self):
-        if self.running:
-            self.stopwatch_label.after_cancel(self.update_time)
-            self.running = False
+        self.running = False
+        self.stopwatch_label.after_cancel(self.update_time)
 
     def resetTimer(self):
         if self.running:
             self.stopwatch_label.after_cancel(self.update_time)
-            self.running = False
         self.minutes, self.seconds, self.milliseconds = 0, 0, 0
         self.stopwatch_label.config(text='00:00:00')
 
     def updateTimer(self):
-        self.milliseconds += 1
-        if self.milliseconds == 60:
-            self.seconds += 1
-            self.milliseconds = 0
-        if self.seconds == 60:
-            self.minutes += 1
-            self.seconds = 0
-        self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
-        self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
-        self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
-        self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
-        self.update_time = self.stopwatch_label.after(10, self.updateTimer)
+        if self.running:
+            self.milliseconds += 1
+            if self.milliseconds == 60:
+                self.seconds += 1
+                self.milliseconds = 0
+            if self.seconds == 60:
+                self.minutes += 1
+                self.seconds = 0
+            self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
+            self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
+            self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
+            self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
+            self.update_time = self.stopwatch_label.after(10, self.updateTimer)
     #FIN PARTIE TIMER    
         
     #PARTIE CSV
@@ -139,6 +138,8 @@ class ControleurJeu(tk.Frame):
         self.rectangles.listeRectangles[2].set_position(c31.Vecteur(85, 350))
         self.rectangles.listeRectangles[3].translateTo(c31.Vecteur(355, 340))
         self.rectangles.listeRectangles[3].set_position(c31.Vecteur(355, 340))
+
+        self.acceleration = 1
 
         self.vueJeu.afficherBordure(self.bordure)
         self.vueJeu.afficherRectanglesBlues(self.rectangles)
@@ -251,10 +252,10 @@ class ControleurJeu(tk.Frame):
             self.vitesse = 14 # La vitesse de la translation du rectangle
             
             # Les directions horizontales et verticales
-            DirectionGauche = RBX - self.vitesse
-            DirectionHaut = RBY - self.vitesse
-            DirectionDroite = RBX + self.vitesse
-            DirectionBas = RBY + self.vitesse
+            DirectionGauche = RBX - self.vitesse * self.acceleration
+            DirectionHaut = RBY - self.vitesse * self.acceleration
+            DirectionDroite = RBX + self.vitesse * self.acceleration
+            DirectionBas = RBY + self.vitesse * self.acceleration
 
             # Les directions diagonales (celles qu'on va utiliser)
             DirectionDroiteHaut = c31.Vecteur(DirectionDroite, DirectionHaut)
@@ -380,6 +381,7 @@ class ControleurJeu(tk.Frame):
 
         # Tant que le jeu n'est pas terminer (pas de collision) rappelle la fonction recursivement à chaque 30 miliseconds
         if not self.gameOver:
+            self.acceleration += 0.002
             wait = Timer(0.03,self.moveR)
             wait.start()
         
@@ -390,5 +392,4 @@ class ControleurJeu(tk.Frame):
             self.listScore.append(self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
             time.sleep(0.75)
             self.initializeAll()
-            print(self.listScore)
             
