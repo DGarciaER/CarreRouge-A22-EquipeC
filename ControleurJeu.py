@@ -50,32 +50,40 @@ class ControleurJeu(tk.Frame):
 
 
 
-        #PARTIE POUR TIMER    
+        #PARTIE POUR TIMER **-----------------------------------------------------------------------------------**    
+    
+    
     def create_widgets(self, container):
-
+        # Label pour afficher le timer
         self.stopwatch_label = tk.Label(container, text='00:00:00', font=('Arial', 20), background= "#FFE299")
         self.stopwatch_label.grid(column=1, row=2, padx=10)
 
     def startTimer(self):
-        """
-
-        """
+        '''Fonction pour commencer le timer. Appeler lorsqu'on click sur le carre rouge'''
         if not self.running:
                 self.running = True
-                self.stopwatch_label.after(10)
                 self.updateTimer()
 
     def pauseTimer(self):
-        self.running = False
-        self.stopwatch_label.after_cancel(self.update_time)
+        '''Fonction pour arreter le timer, on l'appel quand l'utilisateur perds'''
+        if self.running:
+            self.stopwatch_label.after_cancel(self.update_time) #Stop le update du timer
+            self.running = False
+            
 
     def resetTimer(self):
+        '''Cette fonction s'occupe de reinitialiser le timer, on l'appel lorsqu'on recommence une nouvelle partie'''
         if self.running:
             self.stopwatch_label.after_cancel(self.update_time)
+            self.running = False
+        #On remet les variables et le label du timer a zero
         self.minutes, self.seconds, self.milliseconds = 0, 0, 0
         self.stopwatch_label.config(text='00:00:00')
 
     def updateTimer(self):
+        '''Cette fonction s'occupe de mettre a jour les valeurs (millisecondes, secondes et minutes) et les valeurs_string(Pour affichage et sauvegarder les scores)'''
+
+        #Conditions pour update les valeurs
         if self.running:
             self.milliseconds += 1
             if self.milliseconds == 60:
@@ -84,17 +92,30 @@ class ControleurJeu(tk.Frame):
             if self.seconds == 60:
                 self.minutes += 1
                 self.seconds = 0
+            #On transforme les ints en string
             self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
             self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
             self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
             self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
-            self.update_time = self.stopwatch_label.after(10, self.updateTimer)
-    #FIN PARTIE TIMER    
+            self.update_time = self.stopwatch_label.after(17, self.updateTimer) #Variabe appele dans pauseTimer() et resetTimer() avec .after_cancel
+
+
+    #FIN PARTIE TIMER **-----------------------------------------------------------------------------------**
         
-    #PARTIE CSV
+
+
+
+    #PARTIE CSV **-----------------------------------------------------------------------------------**
 
     #Ecriture du score et username dans fichier csv
     def openCSV(self, score, username):
+        '''Fonction pour enregistrer les noms d'utilisateurs ainsi que leurs scores pour la session
+        
+        :param score: le score de la partie (format 00:00:00) enregistre dans une liste a chauque partie fini, et le sauvegarde dans le fichier csv que quand l'utilisateur rentre son nom (ou non)
+        :type score: string 
+        :param username: le nom d'utilisateur insire dans avec le boutton "Quitter" ou "Nouvelle score"
+        :type username: string
+        '''
         f = open('score.csv', 'a', newline='')
         writer = csv.writer(f)
         writer.writerow([username, score])
@@ -102,10 +123,21 @@ class ControleurJeu(tk.Frame):
 
     #Window pop up pour le username
     def setUsername(self, x):
-        if not x == None:
+        '''Setter pour le username. Utilise dans le main pour prendre le nom avec simpledialogs.askstring. Ensuite on utilise le username dans openCSV()
+        
+        :param x: le return de la fonction simpledialogs.askstring, c'est a dire le nom d'utilisateur entree par l'usager
+        :type x: string
+        '''
+        if not x == None: # La fonction simpledialogs.askstring a deux boutton, 'OK' et 'Cancel'. Quand on appuie sur 'OK' la fonction retourne ce qu'il y a dans le text box (string
+            # vide si on n'ecrit rien) et le type None quand on appuie sur cancel. 
             self.username = x + "\n"
         else:
             self.username = x
+
+
+    #FIN PARTIE CSV **-----------------------------------------------------------------------------------**
+
+
 
 
     def initializeAll(self):
