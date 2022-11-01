@@ -73,7 +73,7 @@ if __name__ == "__main__":
         scores = []
 
         
-    jeu.create_widgets(mainContainer)
+    jeu.create_widget(mainContainer)
 
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding

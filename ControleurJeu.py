@@ -43,7 +43,7 @@ class ControleurJeu(tk.Frame):
         self.bordure = Bordure(container)
         
         self.initializeAll()
-
+        #Evenements pour le carré rouge
         self.carreRouge.carreRouge.canvas.bind("<Button-1>", self.click)
         self.carreRouge.carreRouge.canvas.bind("<Motion>", self.moveCR)
         self.carreRouge.carreRouge.canvas.bind("<ButtonRelease-1>", self.release)
@@ -53,29 +53,29 @@ class ControleurJeu(tk.Frame):
         #PARTIE POUR TIMER **-----------------------------------------------------------------------------------**    
     
     
-    def create_widgets(self, container):
-        # Label pour afficher le timer
+    def create_widget(self, container):
+        '''Fonction pour créer le label du timer'''
         self.stopwatch_label = tk.Label(container, text='00:00:00', font=('Arial', 20), background= "#FFE299")
         self.stopwatch_label.grid(column=1, row=2, padx=10)
 
     def startTimer(self):
         '''Fonction pour commencer le timer. Appeler lorsqu'on click sur le carre rouge'''
-        if not self.running:
-                self.running = True
-                self.updateTimer()
+        if not self.running:                                        # Si le timer n'est en marche,
+                self.running = True                                 # Alors on met la variable a True
+                self.updateTimer()                                  # Et on commence le timer
 
     def pauseTimer(self):
         '''Fonction pour arreter le timer, on l'appel quand l'utilisateur perds'''
-        if self.running:
-            self.stopwatch_label.after_cancel(self.update_time) #Stop le update du timer
-            self.running = False
+        if self.running:                                            # Si le timer est en marche,
+            self.stopwatch_label.after_cancel(self.update_time)     # Stop le update du timer
+            self.running = False                                    # On remet la variable à False
             
 
     def resetTimer(self):
         '''Cette fonction s'occupe de reinitialiser le timer, on l'appel lorsqu'on recommence une nouvelle partie'''
-        if self.running:
-            self.stopwatch_label.after_cancel(self.update_time)
-            self.running = False
+        if self.running:                                            # Si le timer est en marche,
+            self.stopwatch_label.after_cancel(self.update_time)     # Alors on arrete le timer
+            self.running = False                                    # On remet la variable à False
         #On remet les variables et le label du timer a zero
         self.minutes, self.seconds, self.milliseconds = 0, 0, 0
         self.stopwatch_label.config(text='00:00:00')
@@ -84,20 +84,20 @@ class ControleurJeu(tk.Frame):
         '''Cette fonction s'occupe de mettre a jour les valeurs (millisecondes, secondes et minutes) et les valeurs_string(Pour affichage et sauvegarder les scores)'''
 
         #Conditions pour update les valeurs
-        if self.running:
-            self.milliseconds += 1
-            if self.milliseconds == 60:
-                self.seconds += 1
-                self.milliseconds = 0
-            if self.seconds == 60:
-                self.minutes += 1
-                self.seconds = 0
+        if self.running:                                            # SI le timer est en marche,
+            self.milliseconds += 1                                  # +1 milliseconde
+            if self.milliseconds == 100:                            # SI les millisecondes arrives a 100,
+                self.seconds += 1                                   # Alors les secondes augmenteront de 1
+                self.milliseconds = 0                               # Et on remet les millisecondes a 0
+            if self.seconds == 60:                                  # SI les secondes arrivent à 60,
+                self.minutes += 1                                   # Alors +1 minute
+                self.seconds = 0                                    # Et on remet les secondes à 0
             #On transforme les ints en string
             self.minutes_string = f'{self.minutes}' if self.minutes > 9 else f'0{self.minutes}'
             self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
             self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
             self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
-            self.update_time = self.stopwatch_label.after(17, self.updateTimer) #Variabe appele dans pauseTimer() et resetTimer() avec .after_cancel
+            self.update_time = self.stopwatch_label.after(2, self.updateTimer) #Variabe update_time, appelé dans pauseTimer() et resetTimer() avec .after_cancel
 
 
     #FIN PARTIE TIMER **-----------------------------------------------------------------------------------**
@@ -410,11 +410,12 @@ class ControleurJeu(tk.Frame):
             wait = Timer(0.03,self.moveR)
             wait.start()
         
-        # Sinon reinisialize tout
+        # Sinon reinisialize tout et append le score dans la liste des scores.
         else:
             print("You Lost")
-            self.pauseTimer()
-            self.listScore.append(self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
+            self.pauseTimer() # On stop le timer dès qu'il y a une collision, donc quand on perd
+            # On append le score de cette partie, pour ensuite l'enrigistrer dans le fichier csv si l'utilisateur le veut
+            self.listScore.append(self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string) 
             time.sleep(0.75)
             self.initializeAll()
             
