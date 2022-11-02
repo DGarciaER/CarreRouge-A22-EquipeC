@@ -67,8 +67,10 @@ if __name__ == "__main__":
         fenetreScore = Toplevel(root)
         fenetreScore.title("Scores")
         fenetreScore.geometry("400x400")
+        scoresLabel = Label(fenetreScore, text="LES SCORES :")
+        scoresLabel.pack(pady=20)
         buttonExit = Button(fenetreScore, text="retour",command=fenetreScore.destroy)
-        
+        buttonSuppimer = Button(fenetreScore, text="Supprimer scores",command=deleteScores)
         
         #----------------------------------
         scores = []
@@ -89,17 +91,22 @@ if __name__ == "__main__":
             label.pack()
 
             for j in i[0][1]:
-                print('\t' + j)
-                label = Label(fenetreScore, text=i[0])
+                # print('\t' + j)
+                label = Label(fenetreScore, text=j)
                 label.pack()
                 
         scores = []
 
-        buttonExit.pack()
+        buttonExit.pack(pady=30)
+        buttonSuppimer.pack()
 
+    def deleteScores(self):
+        
+        f = open("scores.csv", "w")
+        f.truncate()
+        f.close()
         
     jeu.create_widget(mainContainer)
-
 
     # créer un container des buttonset le mettre dans un grid en lui donnant du padding
     buttonsContainer = tk.Canvas(mainContainer, background= couleurTheme, highlightthickness=0)
