@@ -1,6 +1,6 @@
 from cProfile import label
 from sqlite3 import Time
-from tkinter import Label, Toplevel, simpledialog
+from tkinter import Button, Label, Toplevel, simpledialog
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
@@ -67,6 +67,9 @@ if __name__ == "__main__":
         fenetreScore = Toplevel(root)
         fenetreScore.title("Scores")
         fenetreScore.geometry("400x400")
+        buttonExit = Button(fenetreScore, text="retour",command=fenetreScore.destroy)
+        
+        
         #----------------------------------
         scores = []
         #ouverture du fichier CSV
@@ -92,7 +95,7 @@ if __name__ == "__main__":
                 
         scores = []
 
-        #label.pack()
+        buttonExit.pack()
 
         
     jeu.create_widget(mainContainer)
