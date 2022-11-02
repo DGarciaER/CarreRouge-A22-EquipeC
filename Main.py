@@ -1,5 +1,6 @@
+from cProfile import label
 from sqlite3 import Time
-from tkinter import simpledialog
+from tkinter import Label, Toplevel, simpledialog
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
@@ -61,6 +62,12 @@ if __name__ == "__main__":
 
     def AfficherScores():
         """Fonction pour lire les scores """
+        # code TEST-------
+        #creation du widget
+        fenetreScore = Toplevel(root)
+        fenetreScore.title("Scores")
+        fenetreScore.geometry("400x400")
+        #----------------------------------
         scores = []
         #ouverture du fichier CSV
         with open("score.csv",'r') as r:
@@ -75,10 +82,17 @@ if __name__ == "__main__":
             i[0][1] = i[0][1][3:-2]
             i[0][1] = i[0][1].split(', ')
             print(i[0][0])
+            label = Label(fenetreScore, text=i[0][0])#Affiche bien les prenom
+            label.pack()
+
             for j in i[0][1]:
                 print('\t' + j)
+                label = Label(fenetreScore, text=i[0])
+                label.pack()
                 
         scores = []
+
+        #label.pack()
 
         
     jeu.create_widget(mainContainer)
