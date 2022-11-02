@@ -32,8 +32,12 @@ if __name__ == "__main__":
     # # définir l'objet controleur
     jeu = ControleurJeu(aireDeJeu)
     
+
     def askUsername():
+        """Fonction pour demander le nom de lutilisateur. Cette fonctione est appelle lorsque lutilisateur clique sur nouvelle session ou quitter"""
+        #simpledialog demande le nom a lutilisateur
         jeu.setUsername(simpledialog.askstring("Save", "Entrer votre nom pour enregistrer"))
+        #si il clique sur annuler, rien ne se passe
         if jeu.username == None:
             pass
         elif jeu.username == "\n":
@@ -43,10 +47,12 @@ if __name__ == "__main__":
                 jeu.openCSV(jeu.listScore, jeu.username)
 
     def askUsernameQuit():
+        """fonction pour demander le nom de lutilisateur lorsque lon quitte le jeu (clique sur quitter)"""
         jeu.setUsername(simpledialog.askstring("Save", "Entrer votre nom pour enregistrer"))
         if jeu.username == None:
             pass
         elif jeu.username == "\n":
+            #fonction pour quitter le tkinter
             root.quit()
         else:
             if len(jeu.listScore) != 0:
@@ -54,7 +60,9 @@ if __name__ == "__main__":
                 root.quit()
 
     def AfficherScores():
+        """Fonction pour lire les scores """
         scores = []
+        #ouverture du fichier CSV
         with open("score.csv",'r') as r:
             obj = csv.reader(r, delimiter="\n")
             for i in obj:
