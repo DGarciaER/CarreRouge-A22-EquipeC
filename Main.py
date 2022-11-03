@@ -64,13 +64,13 @@ if __name__ == "__main__":
         """Fonction pour lire les scores """
         # code TEST-------
         #creation du widget
-        fenetreScore = Toplevel(root)
+        fenetreScore = Toplevel(root, bg=couleurTheme)
         fenetreScore.title("Scores")
         fenetreScore.geometry("400x400")
         scoresLabel = Label(fenetreScore, text="LES SCORES :")
         scoresLabel.pack(pady=20)
-        buttonExit = Button(fenetreScore, text="retour",command=fenetreScore.destroy)
-        buttonSuppimer = Button(fenetreScore, text="Supprimer scores",command=deleteScores)
+        buttonExit = Button(fenetreScore, text="Retour",command=fenetreScore.destroy)
+        buttonSuppimer = Button(fenetreScore, text="Supprimer scores",command=deleteScore)
         
         #----------------------------------
         scores = []
@@ -100,9 +100,9 @@ if __name__ == "__main__":
         buttonExit.pack(pady=30)
         buttonSuppimer.pack()
 
-    def deleteScores(self):
+    def deleteScore():
         
-        f = open("scores.csv", "w")
+        f = open("score.csv", "w")
         f.truncate()
         f.close()
         
