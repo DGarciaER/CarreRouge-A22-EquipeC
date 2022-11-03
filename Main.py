@@ -46,6 +46,7 @@ if __name__ == "__main__":
         else:
             if len(jeu.listScore) != 0:
                 jeu.openCSV(jeu.listScore, jeu.username)
+                jeu.listScore = []
 
     def askUsernameQuit():
         """fonction pour demander le nom de lutilisateur lorsque lon quitte le jeu (clique sur quitter)"""
@@ -81,6 +82,7 @@ if __name__ == "__main__":
                 ligne = i
                 scores.append(ligne)
         r.close()
+
 
         for i in scores:
             i[0] = i[0].split('\n')
