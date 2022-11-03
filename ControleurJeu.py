@@ -55,7 +55,7 @@ class ControleurJeu(tk.Frame):
     
     def create_widget(self, container):
         '''Fonction pour créer le label du timer'''
-        self.stopwatch_label = tk.Label(container, text='00:00:00', font=('Arial', 20), background= "#FFE299")
+        self.stopwatch_label = tk.Label(container, text='00:00:000', font=('Arial', 20), background= "#FFE299")
         self.stopwatch_label.grid(column=1, row=2, padx=10)
 
     def startTimer(self):
@@ -78,7 +78,7 @@ class ControleurJeu(tk.Frame):
             self.running = False                                    # On remet la variable à False
         #On remet les variables et le label du timer a zero
         self.minutes, self.seconds, self.milliseconds = 0, 0, 0
-        self.stopwatch_label.config(text='00:00:00')
+        self.stopwatch_label.config(text='00:00:000')
 
     def updateTimer(self):
         '''Cette fonction s'occupe de mettre a jour les valeurs (millisecondes, secondes et minutes) et les valeurs_string(Pour affichage et sauvegarder les scores)'''
@@ -86,7 +86,7 @@ class ControleurJeu(tk.Frame):
         #Conditions pour update les valeurs
         if self.running:                                            # SI le timer est en marche,
             self.milliseconds += 1                                  # +1 milliseconde
-            if self.milliseconds == 100:                            # SI les millisecondes arrives a 100,
+            if self.milliseconds == 1000:                            # SI les millisecondes arrives a 1000,
                 self.seconds += 1                                   # Alors les secondes augmenteront de 1
                 self.milliseconds = 0                               # Et on remet les millisecondes a 0
             if self.seconds == 60:                                  # SI les secondes arrivent à 60,
@@ -97,7 +97,7 @@ class ControleurJeu(tk.Frame):
             self.seconds_string = f'{self.seconds}' if self.seconds > 9 else f'0{self.seconds}'
             self.milliseconds_string = f'{self.milliseconds}' if self.milliseconds > 9 else f'0{self.milliseconds}'
             self.stopwatch_label.config(text=self.minutes_string + ':' + self.seconds_string + ':' + self.milliseconds_string)
-            self.update_time = self.stopwatch_label.after(2, self.updateTimer) #Variabe update_time, appelé dans pauseTimer() et resetTimer() avec .after_cancel
+            self.update_time = self.stopwatch_label.after(1, self.updateTimer) #Variabe update_time, appelé dans pauseTimer() et resetTimer() avec .after_cancel
 
 
     #FIN PARTIE TIMER **-----------------------------------------------------------------------------------**
