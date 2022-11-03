@@ -406,7 +406,7 @@ class ControleurJeu(tk.Frame):
 
         # Tant que le jeu n'est pas terminer (pas de collision) rappelle la fonction recursivement à chaque 30 miliseconds
         if not self.gameOver:
-            self.acceleration += 0.002
+            self.acceleration -= 0.002
             wait = Timer(0.03,self.moveR)
             wait.start()
         
