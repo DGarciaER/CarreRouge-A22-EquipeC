@@ -69,7 +69,7 @@ if __name__ == "__main__":
         fenetreScore = tk.Tk()
         fenetreScore.title("Scores")
         fenetreScore.geometry("400x400")
-        buttonsContainerAlignement = tk.Canvas(fenetreScore, background= couleurTheme, highlightthickness=0)
+        buttonsContainerAlignement = tk.Canvas(fenetreScore, highlightthickness=0)
         buttonsContainerAlignement.pack() # pour centrer et donner un padding
         scoresLabel = Label(buttonsContainerAlignement, text="LES SCORES :")
         scoresLabel.grid(column=1,row=1,padx=15)
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         canvascore = Listbox(fenetreScore, yscrollcommand = scrollbar.set )
         
 
-        canvascore.pack( side = LEFT, fill = BOTH )
+        canvascore.pack( side = LEFT, fill = BOTH, padx= 50 )
         scrollbar.config( command = canvascore.yview )
 
         
