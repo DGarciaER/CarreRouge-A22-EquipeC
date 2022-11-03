@@ -14,7 +14,7 @@ class ControleurJeu(tk.Frame):
 
     def __init__(self, container, window=None):
 
-        
+
         #Variables timer
         super().__init__(window)
         self.window = window
@@ -141,6 +141,8 @@ class ControleurJeu(tk.Frame):
 
 
     def initializeAll(self):
+        '''Cette fonction sert à réinitialiser quelques variables à chaque fois qu'on fait une nouvelle session
+        '''
         self.enMouvement = False # boolean qui change selon les evenements click ou release du B1 de la souris, permet de savoir quand deplacer le carre rouge et quand le laisser statique 
         self.gameOver = False # boolean qui nous permet d'arreter le jeu lorsqu'il y a une collision
         self.premierMouv = True
@@ -218,6 +220,8 @@ class ControleurJeu(tk.Frame):
             self.iteration += 1
             
     def collision(self):
+        '''Cette fonction termine le jeu quand une collision à lieu du Carré rouge avec les rectangles ou la bourdure
+        '''
         
         BL = self.bordure.listeBordures[0].get_position().x + self.bordure.listeTaillesBordure[0][0]/2  #position bordure gauche interne
         BR = self.bordure.listeBordures[1].get_position().x - self.bordure.listeTaillesBordure[1][0]/2  #position bordure droite interne
@@ -234,7 +238,6 @@ class ControleurJeu(tk.Frame):
         # detecte les collisions du carre rouge avec la bordure interne
         if  CRT <= BT or CRB >= BB or CRR >= BR or CRL <= BL: 
             self.gameOver = True
-            print("carre rouge est sorti de l'aire de jeu")  # temp pour debug
             
         for i in range(4):
             
@@ -248,13 +251,12 @@ class ControleurJeu(tk.Frame):
                 if  CRR >= RL and CRR <= RR or CRL <= RR and CRL >= RL or CRX <= RR and CRX >= RL:
                     self.gameOver = True
                     break
-
-
-    """ Cette méthode permet de bouger les pions (rectangle bleu) dans le canvas.
-    parametre:
-    event
-    """       
+   
     def moveR(self):
+        """ Cette méthode permet de bouger les pions (rectangle bleu) dans le canvas.
+        parametre:
+        event
+        """    
 
         for i in range(4):
 
