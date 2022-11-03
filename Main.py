@@ -63,8 +63,8 @@ if __name__ == "__main__":
                 root.quit()
 
     def AfficherScores():
-        """Fonction pour lire les scores """
-        # code TEST-------
+        """Fonction pour afficher les scores """
+        
         #creation du widget
         fenetreScore = tk.Tk()
         fenetreScore.title("Scores")
@@ -77,7 +77,6 @@ if __name__ == "__main__":
         buttonSuppimer = Button(buttonsContainerAlignement, text="Supprimer scores",command=deleteScore)
         buttonExit.grid(column=2, row=1,padx=15)
         buttonSuppimer.grid(column=3, row=1, padx=15)
-        #pour scrollbar
         scrollbar = Scrollbar(fenetreScore)
         scrollbar.pack( side = RIGHT, fill = Y )
         canvascore = Listbox(fenetreScore, yscrollcommand = scrollbar.set )
@@ -88,7 +87,7 @@ if __name__ == "__main__":
 
         
         
-        scores = []
+        scores = []  # creation du tableau scores   
 
         #ouverture du fichier CSV
         with open("score.csv",'r') as r:
@@ -98,26 +97,19 @@ if __name__ == "__main__":
                 scores.append(ligne)
         r.close()
         
-        if not scores == [[]]:#si le tableau dans le tableau principal est vide
+        if not scores == [[]]:  #si le tableau dans le tableau principal est vide
             for i in scores:
                 i[0] = i[0].split('\n')
                 i[0][1] = i[0][1][3:-2]
-                i[0][1] = i[0][1].split(', ')
-                print(i[0][0])
-                #label = Label(canvascore, text=i[0][0])#Affiche bien les prenom
-                #label.pack()
+                i[0][1] = i[0][1].split(', ')  #Affiche les prenoms
                 canvascore.insert(END, i[0][0])
                 for j in i[0][1]:
-                    # print('\t' + j)
-                    #label = Label(canvascore, text=j)
-                    #label.pack()
                     canvascore.insert(END, j)
-                
-        scores = []
 
         
 
     def deleteScore():
+        """Fonction pour supprimer les scores """
         
         f = open("score.csv", "w")
         f.truncate()

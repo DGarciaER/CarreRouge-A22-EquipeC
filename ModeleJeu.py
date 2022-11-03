@@ -4,7 +4,6 @@ class CarreRouge:
     tailleCarreRouge = 40
     
     def __init__(self, container):
-        """Dans cette méthode (constructeur du ModeleJeu), on initialiser les éléments de l'aire de jeu."""
         
         # initialisation du Carre Rouge
         couleur = '#ed4242'
