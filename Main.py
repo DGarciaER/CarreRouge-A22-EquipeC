@@ -1,6 +1,7 @@
 from cProfile import label
 from sqlite3 import Time
 from tkinter import Button, Label, Toplevel, simpledialog
+from tkinter import *
 from ControleurJeu import ControleurJeu
 from functools import partial
 import tkinter as tk
@@ -65,16 +66,30 @@ if __name__ == "__main__":
         """Fonction pour lire les scores """
         # code TEST-------
         #creation du widget
-        fenetreScore = Toplevel(root, bg=couleurTheme)
+        fenetreScore = tk.Tk()
         fenetreScore.title("Scores")
         fenetreScore.geometry("400x400")
-        scoresLabel = Label(fenetreScore, text="LES SCORES :")
-        scoresLabel.pack(pady=20)
-        buttonExit = Button(fenetreScore, text="Retour",command=fenetreScore.destroy)
-        buttonSuppimer = Button(fenetreScore, text="Supprimer scores",command=deleteScore)
+        buttonsContainerAlignement = tk.Canvas(fenetreScore, background= couleurTheme, highlightthickness=0)
+        buttonsContainerAlignement.pack() # pour centrer et donner un padding
+        scoresLabel = Label(buttonsContainerAlignement, text="LES SCORES :")
+        scoresLabel.grid(column=1,row=1,padx=15)
+        buttonExit = Button(buttonsContainerAlignement, text="Retour",command=fenetreScore.destroy)
+        buttonSuppimer = Button(buttonsContainerAlignement, text="Supprimer scores",command=deleteScore)
+        buttonExit.grid(column=2, row=1,padx=15)
+        buttonSuppimer.grid(column=3, row=1, padx=15)
+        #pour scrollbar
+        scrollbar = Scrollbar(fenetreScore)
+        scrollbar.pack( side = RIGHT, fill = Y )
+        canvascore = Listbox(fenetreScore, yscrollcommand = scrollbar.set )
         
-        #----------------------------------
+
+        canvascore.pack( side = LEFT, fill = BOTH )
+        scrollbar.config( command = canvascore.yview )
+
+        
+        
         scores = []
+
         #ouverture du fichier CSV
         with open("score.csv",'r') as r:
             obj = csv.reader(r, delimiter="\n")
@@ -82,25 +97,25 @@ if __name__ == "__main__":
                 ligne = i
                 scores.append(ligne)
         r.close()
-
-
-        for i in scores:
-            i[0] = i[0].split('\n')
-            i[0][1] = i[0][1][3:-2]
-            i[0][1] = i[0][1].split(', ')
-            print(i[0][0])
-            label = Label(fenetreScore, text=i[0][0])#Affiche bien les prenom
-            label.pack()
-
-            for j in i[0][1]:
-                # print('\t' + j)
-                label = Label(fenetreScore, text=j)
-                label.pack()
+        
+        if not scores == [[]]:#si le tableau dans le tableau principal est vide
+            for i in scores:
+                i[0] = i[0].split('\n')
+                i[0][1] = i[0][1][3:-2]
+                i[0][1] = i[0][1].split(', ')
+                print(i[0][0])
+                #label = Label(canvascore, text=i[0][0])#Affiche bien les prenom
+                #label.pack()
+                canvascore.insert(END, i[0][0])
+                for j in i[0][1]:
+                    # print('\t' + j)
+                    #label = Label(canvascore, text=j)
+                    #label.pack()
+                    canvascore.insert(END, j)
                 
         scores = []
 
-        buttonExit.pack(pady=30)
-        buttonSuppimer.pack()
+        
 
     def deleteScore():
         
